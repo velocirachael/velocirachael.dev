@@ -1,19 +1,25 @@
 <title>Code Enforcement Checklist</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:wght@400;600;700&display=swap">
 <style>
 :root {
   --bg: #FAFAF8;
   --fg: #1C2536;
   --fg-muted: #5A6478;
   --surface: #FFFFFF;
-  --border: #D8DBE2;
+  --border: #E2E5EA;
   --accent: #2E7D5B;
   --accent-light: #E8F5ED;
-  --accent-dark: #1E5A3E;
-  --warm: #D4890B;
-  --warm-light: #FFF8EB;
-  --display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
-  --body: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+  --blue: #2563EB;
+  --blue-light: #EFF6FF;
+  --orange: #D97706;
+  --orange-light: #FFFBEB;
+  --purple: #7C3AED;
+  --purple-light: #F5F3FF;
+  --red: #DC2626;
+  --red-light: #FEF2F2;
+  --green-check: #16A34A;
+  --display: 'DM Serif Display', Georgia, serif;
+  --body: 'Source Sans 3', system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -24,9 +30,15 @@
     --border: #2D3344;
     --accent: #4ECB8A;
     --accent-light: #142B1D;
-    --accent-dark: #6EDBA5;
-    --warm: #E8B82A;
-    --warm-light: #2A2312;
+    --blue: #60A5FA;
+    --blue-light: #1E2A3A;
+    --orange: #FBBF24;
+    --orange-light: #2A2312;
+    --purple: #A78BFA;
+    --purple-light: #1F1A2E;
+    --red: #F87171;
+    --red-light: #2B1614;
+    --green-check: #4ADE80;
     color-scheme: dark;
   }
 }
@@ -38,158 +50,240 @@
   --border: #2D3344;
   --accent: #4ECB8A;
   --accent-light: #142B1D;
-  --accent-dark: #6EDBA5;
-  --warm: #E8B82A;
-  --warm-light: #2A2312;
+  --blue: #60A5FA;
+  --blue-light: #1E2A3A;
+  --orange: #FBBF24;
+  --orange-light: #2A2312;
+  --purple: #A78BFA;
+  --purple-light: #1F1A2E;
+  --red: #F87171;
+  --red-light: #2B1614;
+  --green-check: #4ADE80;
   color-scheme: dark;
 }
 body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--body);
-  max-width: 680px;
+  max-width: 600px;
   margin: 0 auto;
-  padding-inline: 20px;
-  line-height: 1.65;
-}
-h1 {
-  font-family: var(--display);
-  font-size: clamp(1.8rem, 5vw, 2.4rem);
-  font-weight: 400;
-  margin-block: 2rem 0.5rem;
-  color: var(--fg);
-}
-.subtitle {
-  font-size: 1.1rem;
-  color: var(--fg-muted);
-  margin-block: 0 2rem;
+  padding-inline: 16px;
   line-height: 1.5;
 }
-.friendly-note {
-  background: var(--warm-light);
-  border-left: 4px solid var(--warm);
-  padding: 1rem 1.25rem;
-  border-radius: 0 8px 8px 0;
-  margin-block: 1.5rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding-block: 2.5rem 1.5rem;
 }
-.friendly-note strong {
-  color: var(--warm);
+.hero-icon {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
 }
-h2 {
+.hero h1 {
   font-family: var(--display);
-  font-size: 1.35rem;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
   font-weight: 400;
-  margin-block: 2.5rem 0.75rem;
-  padding-block-end: 0.4rem;
-  border-bottom: 2px solid var(--accent);
-  color: var(--fg);
+  margin: 0 0 0.5rem 0;
 }
-.check-section {
-  margin-block: 1rem 2rem;
+.hero p {
+  color: var(--fg-muted);
+  font-size: 1.05rem;
+  margin: 0;
 }
+
+/* PROGRESS BAR */
+.progress-wrap {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  background: var(--bg);
+  padding-block: 0.75rem;
+  z-index: 10;
+  border-bottom: 1px solid var(--border);
+}
+.progress-bar {
+  height: 12px;
+  background: var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--green-check);
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--fg-muted);
+  margin-top: 0.35rem;
+}
+.progress-label .count {
+  color: var(--green-check);
+}
+
+/* SECTION */
+.section {
+  margin-block: 1.75rem;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+.section-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.section-header h2 {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.s-blue .section-icon { background: var(--blue-light); }
+.s-orange .section-icon { background: var(--orange-light); }
+.s-purple .section-icon { background: var(--purple-light); }
+.s-red .section-icon { background: var(--red-light); }
+
+/* CHECK ITEMS */
 .check-item {
   display: flex;
   gap: 0.75rem;
-  align-items: flex-start;
-  padding: 0.75rem 1rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
   margin-block-end: 0.5rem;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
   -webkit-user-select: none;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.check-item:hover {
-  border-color: var(--accent);
+.check-item:active {
+  transform: scale(0.98);
 }
 .check-item.checked {
-  border-color: var(--accent);
+  border-color: var(--green-check);
   background: var(--accent-light);
 }
-.checkbox {
+.item-icon {
+  font-size: 1.5rem;
   flex-shrink: 0;
-  width: 22px;
-  height: 22px;
-  border: 2px solid var(--border);
-  border-radius: 5px;
-  margin-top: 1px;
+  width: 36px;
+  text-align: center;
+}
+.item-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.item-hint {
+  font-weight: 400;
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  display: block;
+  margin-top: 0.15rem;
+}
+.check-box {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 2.5px solid var(--border);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background 0.15s, border-color 0.15s;
 }
-.check-item.checked .checkbox {
-  background: var(--accent);
-  border-color: var(--accent);
+.check-item.checked .check-box {
+  background: var(--green-check);
+  border-color: var(--green-check);
 }
-.checkbox svg {
+.check-box svg {
   display: none;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
 }
-.check-item.checked .checkbox svg {
+.check-item.checked .check-box svg {
   display: block;
 }
-.check-text {
-  flex: 1;
-  min-width: 0;
-}
-.check-text .question {
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-.check-text .why {
-  font-size: 0.85rem;
-  color: var(--fg-muted);
-  margin-top: 0.25rem;
-  line-height: 1.5;
-}
-.result-bar {
+
+/* RESULT */
+.result {
+  text-align: center;
+  padding: 1.5rem;
   background: var(--surface);
   border: 2px solid var(--border);
-  border-radius: 12px;
-  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
   margin-block: 2rem;
-  text-align: center;
 }
-.result-bar .score {
+.result .big-icon {
+  font-size: 3rem;
+}
+.result .verdict {
   font-family: var(--display);
-  font-size: 2rem;
-  color: var(--accent);
+  font-size: 1.4rem;
+  margin: 0.5rem 0 0.25rem;
 }
-.result-bar .message {
-  font-size: 0.95rem;
+.result .sub {
   color: var(--fg-muted);
-  margin-top: 0.25rem;
+  font-size: 0.9rem;
 }
-.next-steps {
-  background: var(--accent-light);
-  border-radius: 10px;
-  padding: 1.25rem 1.5rem;
-  margin-block: 1.5rem;
+
+/* WHAT TO DO */
+.action-card {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-block-end: 0.5rem;
 }
-.next-steps h3 {
-  font-family: var(--display);
-  font-size: 1.1rem;
-  font-weight: 400;
-  margin: 0 0 0.75rem 0;
+.action-card .ac-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  width: 36px;
+  text-align: center;
+  margin-top: 0.1rem;
 }
-.next-steps ul {
-  margin: 0;
-  padding-left: 1.25rem;
-}
-.next-steps li {
-  margin-block-end: 0.4rem;
+.action-card .ac-text {
   font-size: 0.92rem;
 }
+.action-card .ac-text strong {
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.actions-title {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-block: 2rem 0.75rem;
+  text-align: center;
+}
+
 footer {
   text-align: center;
   padding-block: 2rem 3rem;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--fg-muted);
   border-top: 1px solid var(--border);
   margin-top: 2rem;
@@ -199,156 +293,159 @@ footer a {
   color: var(--accent);
   text-decoration: none;
 }
-footer a:hover {
-  text-decoration: underline;
-}
-@media print {
-  .check-item { break-inside: avoid; }
-  body { max-width: 100%; }
-}
 </style>
 
-<h1>Is Code Enforcement Following Through?</h1>
-<p class="subtitle">A friendly checklist for residents. Because you deserve to know the process is working.</p>
-
-<div class="friendly-note">
-  <strong>Hey neighbor!</strong> This isn't about being adversarial. It's about understanding the process so you can have informed, productive conversations with your local code enforcement office. Knowledge is the best tool in the toolbox.
+<div class="hero">
+  <div class="hero-icon">&#x1F3D8;&#xFE0F;</div>
+  <h1>Is Code Enforcement<br>Following Through?</h1>
+  <p>A quick checklist for your neighborhood.</p>
 </div>
 
-<h2>1. When You File a Complaint</h2>
-<div class="check-section" id="section-filing">
-
-  <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Did you get a case number or reference number?</div>
-      <div class="why">Every complaint should generate a trackable case number. This is how you follow up.</div>
-    </div>
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+  <div class="progress-label">
+    <span>Your Score</span>
+    <span class="count" id="score-text">0 of 12</span>
   </div>
-
-  <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Were you told which specific code section applies?</div>
-      <div class="why">The officer should be able to point to the exact section in your municipality's Code of Ordinances. Not a vague "we'll look into it."</div>
-    </div>
-  </div>
-
-  <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Did they give you a timeline for when they'd follow up?</div>
-      <div class="why">You should know when to expect an update. Most municipalities have response time requirements written into their own procedures.</div>
-    </div>
-  </div>
-
 </div>
 
-<h2>2. The Investigation</h2>
-<div class="check-section" id="section-investigation">
-
-  <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Did an officer actually visit the site?</div>
-      <div class="why">A complaint should result in a site visit, not just a phone call or a note in a file. The officer should physically verify the issue.</div>
-    </div>
+<!-- SECTION 1: FILING -->
+<div class="section s-blue">
+  <div class="section-header">
+    <div class="section-icon">&#x1F4CB;</div>
+    <h2>You Filed a Complaint</h2>
   </div>
 
   <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Were measurements or evidence documented?</div>
-      <div class="why">If the violation involves noise, setbacks, height, or other measurable standards, someone should be recording actual numbers, not just eyeballing it.</div>
-    </div>
+    <div class="item-icon">&#x1F522;</div>
+    <div class="item-text">Got a case number?<span class="item-hint">Every complaint should give you a tracking number.</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
   </div>
 
   <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Did they check for required permits or licenses?</div>
-      <div class="why">Construction, renovations, and certain business activities require permits. The officer should verify permit status, not assume.</div>
-    </div>
+    <div class="item-icon">&#x1F4D6;</div>
+    <div class="item-text">Told you the code section?<span class="item-hint">They should name the exact rule, not just "we'll look into it."</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
   </div>
 
+  <div class="check-item" onclick="toggle(this)">
+    <div class="item-icon">&#x1F4C5;</div>
+    <div class="item-text">Gave you a timeline?<span class="item-hint">When will you hear back? You deserve a date.</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
+  </div>
 </div>
 
-<h2>3. Communication</h2>
-<div class="check-section" id="section-communication">
-
-  <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Did someone get back to you with a status update?</div>
-      <div class="why">You filed a complaint. You should hear back. Silence is not a resolution.</div>
-    </div>
+<!-- SECTION 2: INVESTIGATION -->
+<div class="section s-orange">
+  <div class="section-header">
+    <div class="section-icon">&#x1F50D;</div>
+    <h2>They Investigated</h2>
   </div>
 
   <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Was the explanation clear and specific?</div>
-      <div class="why">You should understand what was found, what action is being taken (or not), and why. "We looked into it" is not an answer.</div>
-    </div>
+    <div class="item-icon">&#x1F6B6;</div>
+    <div class="item-text">Someone actually showed up?<span class="item-hint">A real visit, not just a phone call or a note in a file.</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
   </div>
 
   <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Did they tell you what happens next?</div>
-      <div class="why">Whether it's a notice of violation, a hearing, or case closure, you should know the next step and when it happens.</div>
-    </div>
+    <div class="item-icon">&#x1F4CF;</div>
+    <div class="item-text">They measured or documented it?<span class="item-hint">Real numbers, not eyeballing. Photos, readings, records.</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
   </div>
 
+  <div class="check-item" onclick="toggle(this)">
+    <div class="item-icon">&#x1F4DD;</div>
+    <div class="item-text">Checked for permits?<span class="item-hint">Construction and renovations need permits. Did anyone verify?</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
+  </div>
 </div>
 
-<h2>4. Resolution</h2>
-<div class="check-section" id="section-resolution">
-
-  <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Was the violation actually corrected?</div>
-      <div class="why">A notice of violation is step one. Someone should verify the problem was actually fixed, not just that paperwork was filed.</div>
-    </div>
+<!-- SECTION 3: COMMUNICATION -->
+<div class="section s-purple">
+  <div class="section-header">
+    <div class="section-icon">&#x1F4AC;</div>
+    <h2>They Kept You in the Loop</h2>
   </div>
 
   <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Was enforcement applied consistently?</div>
-      <div class="why">The same violation should get the same response regardless of who files the complaint or who the violator is. Equal enforcement is a legal requirement.</div>
-    </div>
+    <div class="item-icon">&#x1F4E9;</div>
+    <div class="item-text">You got a status update?<span class="item-hint">Silence is not a resolution. You should hear back.</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
   </div>
 
   <div class="check-item" onclick="toggle(this)">
-    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
-    <div class="check-text">
-      <div class="question">Did the process happen within a reasonable timeframe?</div>
-      <div class="why">Code enforcement shouldn't take months for a straightforward issue. Check your municipality's own response time standards.</div>
-    </div>
+    <div class="item-icon">&#x1F4A1;</div>
+    <div class="item-text">The answer was clear and specific?<span class="item-hint">"We looked into it" is not an answer.</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
   </div>
 
+  <div class="check-item" onclick="toggle(this)">
+    <div class="item-icon">&#x27A1;&#xFE0F;</div>
+    <div class="item-text">They told you what happens next?<span class="item-hint">A notice? A hearing? Case closed? You should know.</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
+  </div>
 </div>
 
-<div class="result-bar">
-  <div class="score" id="score">0 / 12</div>
-  <div class="message" id="message">Check off each item as you review your case.</div>
+<!-- SECTION 4: RESOLUTION -->
+<div class="section s-red">
+  <div class="section-header">
+    <div class="section-icon">&#x2705;</div>
+    <h2>It Actually Got Fixed</h2>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="item-icon">&#x1F6E0;&#xFE0F;</div>
+    <div class="item-text">The problem was actually corrected?<span class="item-hint">Paperwork is step one. Someone should verify the fix.</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="item-icon">&#x2696;&#xFE0F;</div>
+    <div class="item-text">Same rules for everyone?<span class="item-hint">Equal enforcement is a legal requirement, not optional.</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="item-icon">&#x23F1;&#xFE0F;</div>
+    <div class="item-text">Done in a reasonable time?<span class="item-hint">A straightforward issue shouldn't take months.</span></div>
+    <div class="check-box"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 L6.5 12 L13 4"/></svg></div>
+  </div>
 </div>
 
-<div class="next-steps">
-  <h3>If Several Boxes Are Unchecked</h3>
-  <ul>
-    <li><strong>Document everything.</strong> Dates, names, what was said, what wasn't done. Emails are better than phone calls because they create a record.</li>
-    <li><strong>Request records.</strong> You have a right to public records about your case. A simple written request to the city clerk's office is all it takes.</li>
-    <li><strong>Escalate politely.</strong> Contact the code compliance supervisor or the city manager's office. Reference your case number and specific concerns.</li>
-    <li><strong>Attend a commission meeting.</strong> Public comment periods exist for exactly this. Three minutes goes a long way when you bring facts.</li>
-    <li><strong>Know your rights.</strong> Your municipality's Code of Ordinances is a public document. Most are searchable online through Municode or your city's website.</li>
-  </ul>
+<!-- RESULT -->
+<div class="result" id="result">
+  <div class="big-icon" id="result-icon">&#x1F4CB;</div>
+  <div class="verdict" id="verdict">Check off each item above</div>
+  <div class="sub" id="sub-verdict">Tap any row to mark it done.</div>
 </div>
 
-<div class="friendly-note">
-  <strong>Remember:</strong> Code enforcement officers are people doing a job. Most want to do it well. This checklist helps everyone by making the process transparent. When the process works, the whole neighborhood benefits.
+<!-- WHAT TO DO -->
+<div class="actions-title">&#x1F6A8; Boxes Unchecked? Here's What to Do</div>
+
+<div class="action-card">
+  <div class="ac-icon">&#x1F4F8;</div>
+  <div class="ac-text"><strong>Document everything.</strong>Dates, names, what was said. Emails beat phone calls because they create a paper trail.</div>
+</div>
+
+<div class="action-card">
+  <div class="ac-icon">&#x1F4C2;</div>
+  <div class="ac-text"><strong>Request your records.</strong>You have a legal right to public records about your case. One written request to the city clerk.</div>
+</div>
+
+<div class="action-card">
+  <div class="ac-icon">&#x1F4E2;</div>
+  <div class="ac-text"><strong>Escalate politely.</strong>Contact the code compliance supervisor or city manager. Use your case number.</div>
+</div>
+
+<div class="action-card">
+  <div class="ac-icon">&#x1F3DB;&#xFE0F;</div>
+  <div class="ac-text"><strong>Show up to a commission meeting.</strong>Public comment is 3 minutes. Facts go a long way.</div>
+</div>
+
+<div class="action-card">
+  <div class="ac-icon">&#x1F4F1;</div>
+  <div class="ac-text"><strong>Look up your code.</strong>Your municipality's Code of Ordinances is public. Most are on Municode or your city's website.</div>
 </div>
 
 <footer>
@@ -361,25 +458,45 @@ footer a:hover {
 <script>
 function toggle(el) {
   el.classList.toggle('checked');
-  updateScore();
+  update();
 }
 
-function updateScore() {
+function update() {
   var checked = document.querySelectorAll('.check-item.checked').length;
   var total = document.querySelectorAll('.check-item').length;
-  document.getElementById('score').textContent = checked + ' / ' + total;
+  var pct = Math.round((checked / total) * 100);
 
-  var msg = document.getElementById('message');
+  document.getElementById('fill').style.width = pct + '%';
+  document.getElementById('score-text').textContent = checked + ' of ' + total;
+
+  var icon = document.getElementById('result-icon');
+  var verdict = document.getElementById('verdict');
+  var sub = document.getElementById('sub-verdict');
+
   if (checked === 0) {
-    msg.textContent = 'Check off each item as you review your case.';
-  } else if (checked <= 4) {
-    msg.textContent = 'Some gaps here. Keep reviewing and documenting.';
-  } else if (checked <= 8) {
-    msg.textContent = 'Getting there. Follow up on the unchecked items.';
+    icon.innerHTML = '&#x1F4CB;';
+    verdict.textContent = 'Check off each item above';
+    sub.textContent = 'Tap any row to mark it done.';
+  } else if (checked <= 3) {
+    icon.innerHTML = '&#x1F6A8;';
+    verdict.textContent = 'Some gaps here';
+    sub.textContent = 'See the action steps below.';
+  } else if (checked <= 6) {
+    icon.innerHTML = '&#x1F914;';
+    verdict.textContent = 'Getting somewhere';
+    sub.textContent = 'Follow up on the unchecked items.';
+  } else if (checked <= 9) {
+    icon.innerHTML = '&#x1F44D;';
+    verdict.textContent = 'Looking pretty good';
+    sub.textContent = 'A few things to verify.';
   } else if (checked < total) {
-    msg.textContent = 'Almost complete. A few things to verify.';
+    icon.innerHTML = '&#x1F60A;';
+    verdict.textContent = 'Almost there';
+    sub.textContent = 'Just a couple more to confirm.';
   } else {
-    msg.textContent = 'Looks like the process worked as it should!';
+    icon.innerHTML = '&#x1F389;';
+    verdict.textContent = 'The process worked!';
+    sub.textContent = 'This is how it should go every time.';
   }
 }
 </script>

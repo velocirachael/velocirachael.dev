@@ -1,0 +1,385 @@
+<title>Code Enforcement Checklist</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --fg: #1C2536;
+  --fg-muted: #5A6478;
+  --surface: #FFFFFF;
+  --border: #D8DBE2;
+  --accent: #2E7D5B;
+  --accent-light: #E8F5ED;
+  --accent-dark: #1E5A3E;
+  --warm: #D4890B;
+  --warm-light: #FFF8EB;
+  --display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --body: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1319;
+    --fg: #E4E7ED;
+    --fg-muted: #8D95A6;
+    --surface: #1A1F2B;
+    --border: #2D3344;
+    --accent: #4ECB8A;
+    --accent-light: #142B1D;
+    --accent-dark: #6EDBA5;
+    --warm: #E8B82A;
+    --warm-light: #2A2312;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1319;
+  --fg: #E4E7ED;
+  --fg-muted: #8D95A6;
+  --surface: #1A1F2B;
+  --border: #2D3344;
+  --accent: #4ECB8A;
+  --accent-light: #142B1D;
+  --accent-dark: #6EDBA5;
+  --warm: #E8B82A;
+  --warm-light: #2A2312;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  max-width: 680px;
+  margin: 0 auto;
+  padding-inline: 20px;
+  line-height: 1.65;
+}
+h1 {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 400;
+  margin-block: 2rem 0.5rem;
+  color: var(--fg);
+}
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--fg-muted);
+  margin-block: 0 2rem;
+  line-height: 1.5;
+}
+.friendly-note {
+  background: var(--warm-light);
+  border-left: 4px solid var(--warm);
+  padding: 1rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+  margin-block: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.friendly-note strong {
+  color: var(--warm);
+}
+h2 {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin-block: 2.5rem 0.75rem;
+  padding-block-end: 0.4rem;
+  border-bottom: 2px solid var(--accent);
+  color: var(--fg);
+}
+.check-section {
+  margin-block: 1rem 2rem;
+}
+.check-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-block-end: 0.5rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.check-item:hover {
+  border-color: var(--accent);
+}
+.check-item.checked {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.checkbox {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+.check-item.checked .checkbox {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.checkbox svg {
+  display: none;
+  width: 14px;
+  height: 14px;
+}
+.check-item.checked .checkbox svg {
+  display: block;
+}
+.check-text {
+  flex: 1;
+  min-width: 0;
+}
+.check-text .question {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.check-text .why {
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  margin-top: 0.25rem;
+  line-height: 1.5;
+}
+.result-bar {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-block: 2rem;
+  text-align: center;
+}
+.result-bar .score {
+  font-family: var(--display);
+  font-size: 2rem;
+  color: var(--accent);
+}
+.result-bar .message {
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+  margin-top: 0.25rem;
+}
+.next-steps {
+  background: var(--accent-light);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-block: 1.5rem;
+}
+.next-steps h3 {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: 0 0 0.75rem 0;
+}
+.next-steps ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+.next-steps li {
+  margin-block-end: 0.4rem;
+  font-size: 0.92rem;
+}
+footer {
+  text-align: center;
+  padding-block: 2rem 3rem;
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+  line-height: 1.6;
+}
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+@media print {
+  .check-item { break-inside: avoid; }
+  body { max-width: 100%; }
+}
+</style>
+
+<h1>Is Code Enforcement Following Through?</h1>
+<p class="subtitle">A friendly checklist for residents. Because you deserve to know the process is working.</p>
+
+<div class="friendly-note">
+  <strong>Hey neighbor!</strong> This isn't about being adversarial. It's about understanding the process so you can have informed, productive conversations with your local code enforcement office. Knowledge is the best tool in the toolbox.
+</div>
+
+<h2>1. When You File a Complaint</h2>
+<div class="check-section" id="section-filing">
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Did you get a case number or reference number?</div>
+      <div class="why">Every complaint should generate a trackable case number. This is how you follow up.</div>
+    </div>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Were you told which specific code section applies?</div>
+      <div class="why">The officer should be able to point to the exact section in your municipality's Code of Ordinances. Not a vague "we'll look into it."</div>
+    </div>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Did they give you a timeline for when they'd follow up?</div>
+      <div class="why">You should know when to expect an update. Most municipalities have response time requirements written into their own procedures.</div>
+    </div>
+  </div>
+
+</div>
+
+<h2>2. The Investigation</h2>
+<div class="check-section" id="section-investigation">
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Did an officer actually visit the site?</div>
+      <div class="why">A complaint should result in a site visit, not just a phone call or a note in a file. The officer should physically verify the issue.</div>
+    </div>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Were measurements or evidence documented?</div>
+      <div class="why">If the violation involves noise, setbacks, height, or other measurable standards, someone should be recording actual numbers, not just eyeballing it.</div>
+    </div>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Did they check for required permits or licenses?</div>
+      <div class="why">Construction, renovations, and certain business activities require permits. The officer should verify permit status, not assume.</div>
+    </div>
+  </div>
+
+</div>
+
+<h2>3. Communication</h2>
+<div class="check-section" id="section-communication">
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Did someone get back to you with a status update?</div>
+      <div class="why">You filed a complaint. You should hear back. Silence is not a resolution.</div>
+    </div>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Was the explanation clear and specific?</div>
+      <div class="why">You should understand what was found, what action is being taken (or not), and why. "We looked into it" is not an answer.</div>
+    </div>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Did they tell you what happens next?</div>
+      <div class="why">Whether it's a notice of violation, a hearing, or case closure, you should know the next step and when it happens.</div>
+    </div>
+  </div>
+
+</div>
+
+<h2>4. Resolution</h2>
+<div class="check-section" id="section-resolution">
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Was the violation actually corrected?</div>
+      <div class="why">A notice of violation is step one. Someone should verify the problem was actually fixed, not just that paperwork was filed.</div>
+    </div>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Was enforcement applied consistently?</div>
+      <div class="why">The same violation should get the same response regardless of who files the complaint or who the violator is. Equal enforcement is a legal requirement.</div>
+    </div>
+  </div>
+
+  <div class="check-item" onclick="toggle(this)">
+    <div class="checkbox"><svg viewBox="0 0 14 14" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5"/></svg></div>
+    <div class="check-text">
+      <div class="question">Did the process happen within a reasonable timeframe?</div>
+      <div class="why">Code enforcement shouldn't take months for a straightforward issue. Check your municipality's own response time standards.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="result-bar">
+  <div class="score" id="score">0 / 12</div>
+  <div class="message" id="message">Check off each item as you review your case.</div>
+</div>
+
+<div class="next-steps">
+  <h3>If Several Boxes Are Unchecked</h3>
+  <ul>
+    <li><strong>Document everything.</strong> Dates, names, what was said, what wasn't done. Emails are better than phone calls because they create a record.</li>
+    <li><strong>Request records.</strong> You have a right to public records about your case. A simple written request to the city clerk's office is all it takes.</li>
+    <li><strong>Escalate politely.</strong> Contact the code compliance supervisor or the city manager's office. Reference your case number and specific concerns.</li>
+    <li><strong>Attend a commission meeting.</strong> Public comment periods exist for exactly this. Three minutes goes a long way when you bring facts.</li>
+    <li><strong>Know your rights.</strong> Your municipality's Code of Ordinances is a public document. Most are searchable online through Municode or your city's website.</li>
+  </ul>
+</div>
+
+<div class="friendly-note">
+  <strong>Remember:</strong> Code enforcement officers are people doing a job. Most want to do it well. This checklist helps everyone by making the process transparent. When the process works, the whole neighborhood benefits.
+</div>
+
+<footer>
+  Made with care by your neighborhood code decoder<br>
+  <a href="https://velocirachael.dev">velocirachael.dev</a><br><br>
+  &copy; 2026 Rachael Strader. All rights reserved.<br>
+  Unauthorized reproduction or derivative use is prohibited without prior written consent.
+</footer>
+
+<script>
+function toggle(el) {
+  el.classList.toggle('checked');
+  updateScore();
+}
+
+function updateScore() {
+  var checked = document.querySelectorAll('.check-item.checked').length;
+  var total = document.querySelectorAll('.check-item').length;
+  document.getElementById('score').textContent = checked + ' / ' + total;
+
+  var msg = document.getElementById('message');
+  if (checked === 0) {
+    msg.textContent = 'Check off each item as you review your case.';
+  } else if (checked <= 4) {
+    msg.textContent = 'Some gaps here. Keep reviewing and documenting.';
+  } else if (checked <= 8) {
+    msg.textContent = 'Getting there. Follow up on the unchecked items.';
+  } else if (checked < total) {
+    msg.textContent = 'Almost complete. A few things to verify.';
+  } else {
+    msg.textContent = 'Looks like the process worked as it should!';
+  }
+}
+</script>
