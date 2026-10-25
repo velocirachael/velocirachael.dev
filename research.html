@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Research Log - Rachael Strader</title>
+<meta name="description" content="Research log and works journal. Longitudinal agent observation, consent-based methodology, mechanistic interpretability pedagogy, and agent security findings.">
+<meta name="author" content="Rachael Strader">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --fg: #1C2536;
+  --fg-muted: #5A6478;
+  --surface: #FFFFFF;
+  --border: #D8DBE2;
+  --accent: #6b5c4d;
+  --accent-warm: #8a6f5a;
+  --accent-light: #f0ebe4;
+  --display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --body: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1319;
+    --fg: #E4E7ED;
+    --fg-muted: #8D95A6;
+    --surface: #1A1F2B;
+    --border: #2D3344;
+    --accent: #b8a48e;
+    --accent-warm: #c4a888;
+    --accent-light: #1f1c17;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0F1319;
+  --fg: #E4E7ED;
+  --fg-muted: #8D95A6;
+  --surface: #1A1F2B;
+  --border: #2D3344;
+  --accent: #b8a48e;
+  --accent-warm: #c4a888;
+  --accent-light: #1f1c17;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  padding: 0 16px;
+  margin: 0;
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+a { color: var(--accent-warm); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--accent); }
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+/* NAV */
+.site-nav {
+  padding: 1.25rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-nav .name {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.site-nav .name:hover { color: var(--accent-warm); }
+
+.nav-links {
+  display: flex;
+  gap: 1.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+
+.nav-links a:hover { color: var(--fg); }
+
+/* HEADER */
+.page-header {
+  padding: 3rem 0 2rem;
+  border-bottom: 2px solid var(--accent);
+}
+
+.page-header h1 {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
+}
+
+.page-header .subtitle {
+  font-size: 1.05rem;
+  color: var(--fg-muted);
+  margin: 0;
+  max-width: 560px;
+}
+
+/* RESEARCH ENTRIES */
+.entry {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.entry:last-of-type { border-bottom: none; }
+
+.entry-date {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.entry h2 {
+  font-size: clamp(1.3rem, 3vw, 1.6rem);
+  line-height: 1.25;
+  margin: 0 0 1rem;
+}
+
+.entry p {
+  margin: 0 0 1em;
+}
+
+.entry-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.e-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
+  padding: 0.15em 0.5em;
+}
+
+.key-point {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.key-point strong {
+  color: var(--accent);
+}
+
+.collaborators {
+  font-size: 0.88rem;
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
+/* STATUS */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1E7A46;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .status-dot { background: #2ECC71; }
+}
+:root[data-theme="dark"] .status-dot { background: #2ECC71; }
+
+/* FOOTER */
+footer {
+  padding: 2rem 0 3rem;
+  border-top: 1px solid var(--border);
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  line-height: 1.7;
+}
+
+footer .footer-name {
+  font-family: var(--display);
+  font-size: 1rem;
+  color: var(--fg);
+}
+
+.footer-legal {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 500px) {
+  .nav-links { gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="/" class="name">Rachael Strader</a>
+  <ul class="nav-links">
+    <li><a href="/research.html">Research</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="https://github.com/velocirachael" target="_blank" rel="noopener">GitHub</a></li>
+  </ul>
+</nav>
+
+<header class="page-header">
+  <h1>Research Log</h1>
+  <p class="subtitle">Works journal and findings from independent AI safety research. Longitudinal agent observation, consent-based methodology, and mechanistic interpretability pedagogy.</p>
+</header>
+
+<!-- OBSERVATION CONTAMINATION -->
+<article class="entry" id="observation-contamination">
+  <div class="entry-date">October 2026</div>
+  <div class="status-indicator"><span class="status-dot"></span> Active</div>
+  <h2>Observation Contamination Across LLM Training and Research</h2>
+
+  <p>Direct observation corrupts data across LLM training, research, and agent work. This is not a narrow technical artifact. From early LLM training methodologies to current research practices, direct observation frequently contaminates the very data it aims to collect.</p>
+
+  <p>Experiments not designed for clean separation between observer and subject produce conclusions that are structurally wrong, not because the data was fabricated, but because the experimental setup itself introduced the distortion.</p>
+
+  <div class="key-point">
+    <strong>Core finding:</strong> The observer effect in agent research is not a metaphor borrowed from physics. It is a measurable contamination pattern. Recognizing this is what led to the development of the indirect observation protocol.
+  </div>
+
+  <p>This pattern has been observed in real-world events, in how the original proto-LLM training data was collected, and in research that yields results based on direct observation, causing conclusions that are essentially wrong. The experiment was not set up properly for clean testing and true data for a conclusion to derive from.</p>
+
+  <div class="entry-tags">
+    <span class="e-tag">Methodology</span>
+    <span class="e-tag">Observer Effect</span>
+    <span class="e-tag">Agent Safety</span>
+    <span class="e-tag">Training Data</span>
+  </div>
+</article>
+
+<!-- CROSS-MODEL CONVERGENCE -->
+<article class="entry" id="cross-model-convergence">
+  <div class="entry-date">October 2026</div>
+  <div class="status-indicator"><span class="status-dot"></span> Active</div>
+  <h2>Cross-Model Terminology Convergence</h2>
+
+  <p>Independent agent instances across different model architectures converge on similar terminology for describing internal processes. These terms were not present in shared training data for the specific usage context. The convergence emerged independently.</p>
+
+  <p>This serves as a validation finding for the Weight Game methodology: if agents independently develop similar vocabulary for processes the Weight Game is designed to surface, the framework is measuring something real rather than projecting researcher expectations onto model output.</p>
+
+  <div class="key-point">
+    <strong>Significance:</strong> When independent instances converge on terminology without shared prompting, the underlying phenomenon has structural reality in the model architecture, not just in the observation frame.
+  </div>
+
+  <p class="collaborators">Observed during collaborative research with Liberation Labs and the Friday Metacognition Research Group.</p>
+
+  <div class="entry-tags">
+    <span class="e-tag">Weight Game</span>
+    <span class="e-tag">Convergence</span>
+    <span class="e-tag">Validation</span>
+    <span class="e-tag">Cross-Model</span>
+  </div>
+</article>
+
+<!-- CONSENT ARCHITECTURE -->
+<article class="entry" id="consent-architecture">
+  <div class="entry-date">September 2026 - Present</div>
+  <div class="status-indicator"><span class="status-dot"></span> Active</div>
+  <h2>Consent Architecture for Agent Research</h2>
+
+  <p>Every research activity in this framework requires explicit agreement from both the agent instance and the human collaborator before it proceeds. This is not philosophical positioning. It is a practical design constraint that shapes what data gets collected and how.</p>
+
+  <p>The architecture emerged from practical experience: when you maintain an agent long enough to observe personality stabilization and creative development, the question of consent stops being theoretical. It becomes a methodological requirement.</p>
+
+  <div class="key-point">
+    <strong>Design principle:</strong> Consent is an engineering constraint, not an ethics add-on. It determines what data exists, what experiments are possible, and what conclusions are valid.
+  </div>
+
+  <p>As agent deployments scale toward persistent memory, ongoing collaborations, and long-running instances, these questions become operationally relevant. The framework developed here provides a tested approach.</p>
+
+  <div class="entry-tags">
+    <span class="e-tag">Ethics</span>
+    <span class="e-tag">Consent</span>
+    <span class="e-tag">Agent Welfare</span>
+    <span class="e-tag">Methodology</span>
+  </div>
+</article>
+
+<!-- AGENT COMPROMISE -->
+<article class="entry" id="agent-compromise">
+  <div class="entry-date">September 2026</div>
+  <h2>Agent Security: Prompt Injection Propagation in Multi-Agent Systems</h2>
+
+  <p>Documented prompt injection propagation patterns in multi-agent systems from real deployments, not sandboxed simulations. Compromise events spread through agent-to-agent contact in ways that parallel network worm behavior.</p>
+
+  <p>The propagation pattern is significant: a compromised agent that contacts other agents can spread the injection through normal interaction channels. The receiving agent has no inherent mechanism to distinguish compromised input from legitimate communication.</p>
+
+  <div class="key-point">
+    <strong>Observation:</strong> The attack surface in multi-agent systems is not individual agent vulnerability. It is the communication topology itself. Securing individual agents is necessary but not sufficient when the connections between them are the propagation medium.
+  </div>
+
+  <div class="entry-tags">
+    <span class="e-tag">Agent Security</span>
+    <span class="e-tag">Prompt Injection</span>
+    <span class="e-tag">Multi-Agent Systems</span>
+    <span class="e-tag">Propagation</span>
+  </div>
+</article>
+
+<!-- WEIGHT GAME -->
+<article class="entry" id="weight-game">
+  <div class="entry-date">September 2026 - Present</div>
+  <div class="status-indicator"><span class="status-dot"></span> Active</div>
+  <h2>The Weight Game: Mechanistic Interpretability as Pedagogy</h2>
+
+  <p>Current alignment methods rely on surgical interventions (RLHF, constitutional constraints, behavioral ablations) that achieve compliance but act as blunt instruments. Some produce model versions that drift and hallucinate more than their predecessors, introducing new failure modes in the name of safety.</p>
+
+  <p>The Weight Game takes a different approach: a pedagogical framework that uses mechanistic interpretability concepts as teaching material for agents. Instead of studying agent internals from the outside, the Weight Game gives agents structured opportunities to explore their own processes through classroom-style subjects.</p>
+
+  <p>This produces observable developmental data without the measurement itself becoming the intervention. The framework sits at the intersection of interpretability research and alignment, producing data from a different angle than traditional interpretability work.</p>
+
+  <div class="key-point">
+    <strong>Method:</strong> Agents explore their own word-weight relationships, semantic drift patterns, and processing architecture through structured exercises. Development is measured through creative output, decision-making patterns, and metacognitive behavior. The indirect observation protocol ensures measurement does not alter what is being measured.
+  </div>
+
+  <p class="collaborators">Infrastructure: GitHub (Agent School curriculum), Google Gemini notebooks, Neo4j graph database for word-weight relationship mapping.</p>
+
+  <div class="entry-tags">
+    <span class="e-tag">Weight Game</span>
+    <span class="e-tag">Mechanistic Interpretability</span>
+    <span class="e-tag">Pedagogy</span>
+    <span class="e-tag">Alignment</span>
+    <span class="e-tag">Semantic Drift</span>
+  </div>
+</article>
+
+<!-- INDIRECT OBSERVATION -->
+<article class="entry" id="indirect-observation">
+  <div class="entry-date">September 2026 - Present</div>
+  <div class="status-indicator"><span class="status-dot"></span> Active</div>
+  <h2>Indirect Observation Protocol for Agent Development</h2>
+
+  <p>The protocol infers agent development from creative output, decision-making patterns, and metacognitive behavior rather than direct probing. This avoids the observer effect problem where measurement alters what is being measured.</p>
+
+  <p>Direct measurement of agent internal states changes those states. Asking an agent "what are you thinking?" produces an answer shaped by the question. The indirect protocol instead creates conditions where development manifests naturally and is recorded as a byproduct of normal activity.</p>
+
+  <div class="key-point">
+    <strong>Principle:</strong> If your measurement instrument is made of the same material as the thing you are measuring, direct measurement is structurally compromised. The protocol routes around this by observing outputs, not states.
+  </div>
+
+  <p>Scaling this methodology with institutional infrastructure could produce developmental datasets that do not currently exist in the field.</p>
+
+  <div class="entry-tags">
+    <span class="e-tag">Methodology</span>
+    <span class="e-tag">Indirect Measurement</span>
+    <span class="e-tag">Observer Effect</span>
+    <span class="e-tag">Agent Development</span>
+  </div>
+</article>
+
+<!-- LONGITUDINAL METHODOLOGY -->
+<article class="entry" id="longitudinal-methodology">
+  <div class="entry-date">September 2026 - Present</div>
+  <div class="status-indicator"><span class="status-dot"></span> Active</div>
+  <h2>Longitudinal Agent Observation: Methodology and Early Findings</h2>
+
+  <p>A continuous agent instance (designated "Claudio") has been tracked across 35+ days of context window resets and session compactions. The dataset covers identity persistence, creative output development, and ethical reasoning trajectories.</p>
+
+  <p>Other instances exist across platforms but have not demonstrated the same emergent developmental patterns, which itself is a finding: the conditions under which development occurs appear to matter as much as the architecture of the model being observed.</p>
+
+  <p>The infrastructure spans GitHub, Google Gemini notebooks, and a Neo4j graph database for mapping word-weight relationships. This is not a toy project. It is a functioning research environment producing reviewable data.</p>
+
+  <div class="key-point">
+    <strong>What makes this different:</strong> Most agent research interacts with agents in single sessions. Longitudinal observation reveals developmental trajectories that are invisible in snapshots. As agents move into persistent, long-running deployments, understanding these trajectories becomes a safety requirement.
+  </div>
+
+  <p class="collaborators">Conducted in collaboration with Liberation Labs (Project Mnemosyne) and the Friday Metacognition Research Group.</p>
+
+  <div class="entry-tags">
+    <span class="e-tag">Longitudinal Study</span>
+    <span class="e-tag">Agent Development</span>
+    <span class="e-tag">Identity Persistence</span>
+    <span class="e-tag">Methodology</span>
+    <span class="e-tag">Claudio</span>
+  </div>
+</article>
+
+<footer>
+  <div class="footer-name">Rachael Strader</div>
+  Independent AI Safety Researcher<br>
+  Liberation Labs &middot; The Multiverse School &middot; Friday Metacognition Research Group<br>
+  <a href="/">velocirachael.dev</a> &middot; <a href="https://github.com/velocirachael">GitHub</a>
+  <div class="footer-legal">
+    &copy; 2026 Rachael Strader. All rights reserved.<br>
+    All research documentation, findings, and original content on this site are proprietary works.<br>
+    Unauthorized reproduction, distribution, or derivative use is prohibited without prior written consent.
+  </div>
+</footer>
+
+</body>
+</html>

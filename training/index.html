@@ -1,0 +1,556 @@
+<title>Municipal Code Training</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap">
+<style>
+/* Layout: single-column editorial with a module catalog grid */
+:root {
+  --bg: #FAFAF8;
+  --fg: #1C2536;
+  --fg-muted: #5A6478;
+  --surface: #FFFFFF;
+  --border: #D8DBE2;
+  --accent: #B8860B;
+  --accent-light: #F5ECD7;
+  --accent-dark: #8B6508;
+  --red: #C0392B;
+  --red-light: #FDECEA;
+  --green: #1E7A46;
+  --green-light: #E8F5ED;
+  --display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --body: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1319;
+    --fg: #E4E7ED;
+    --fg-muted: #8D95A6;
+    --surface: #1A1F2B;
+    --border: #2D3344;
+    --accent: #D4A017;
+    --accent-light: #2A2312;
+    --accent-dark: #E8B82A;
+    --red: #E74C3C;
+    --red-light: #2B1614;
+    --green: #2ECC71;
+    --green-light: #142B1D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1319;
+  --fg: #E4E7ED;
+  --fg-muted: #8D95A6;
+  --surface: #1A1F2B;
+  --border: #2D3344;
+  --accent: #D4A017;
+  --accent-light: #2A2312;
+  --accent-dark: #E8B82A;
+  --red: #E74C3C;
+  --red-light: #2B1614;
+  --green: #2ECC71;
+  --green-light: #142B1D;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  padding-inline: 20px;
+  padding-block: 0;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin: 0 0 0.5rem; }
+h2 { font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1.25; margin: 0 0 1rem; }
+h3 { font-size: 1.15rem; margin: 0 0 0.25rem; }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--accent-dark); }
+
+/* HERO */
+.hero {
+  padding-block: 3rem 2rem;
+  border-bottom: 2px solid var(--accent);
+}
+.hero .label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+.hero p {
+  font-size: 1.15rem;
+  color: var(--fg-muted);
+  max-width: 640px;
+  margin: 0;
+}
+.hero .tagline {
+  font-family: var(--display);
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  color: var(--fg);
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+/* SECTIONS */
+section {
+  padding-block: 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+section:last-of-type { border-bottom: none; }
+
+/* LIABILITY CALLOUT */
+.callout {
+  background: var(--red-light);
+  border-left: 4px solid var(--red);
+  padding: 1.25rem 1.5rem;
+  margin-block: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+.callout strong { color: var(--red); }
+
+/* MODULE CATALOG */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.module-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.2s;
+}
+.module-card.has-link:hover {
+  border-color: var(--accent);
+  cursor: pointer;
+}
+a.module-link {
+  text-decoration: none;
+  color: inherit;
+  display: contents;
+}
+.module-num {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.module-title {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+.module-desc {
+  font-size: 0.88rem;
+  color: var(--fg-muted);
+  line-height: 1.5;
+  flex: 1;
+}
+.module-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2em 0.6em;
+  align-self: flex-start;
+}
+.tag-sample {
+  background: var(--green-light);
+  color: var(--green);
+}
+.tag-available {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.capstone-card {
+  grid-column: 1 / -1;
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+.capstone-card .module-title {
+  font-size: 1.2rem;
+}
+
+/* DELIVERABLES */
+.deliverables {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.deliverable-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+.deliverable-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  color: var(--accent);
+}
+
+/* CREDENTIALS */
+.cred-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.cred-block h3 {
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+.cred-block p, .cred-block ul {
+  font-size: 0.92rem;
+  color: var(--fg-muted);
+  margin: 0;
+  line-height: 1.55;
+}
+.cred-block ul {
+  list-style: none;
+  padding: 0;
+}
+.cred-block li {
+  padding: 0.15em 0;
+}
+.cred-block li::before {
+  content: "\2022";
+  color: var(--accent);
+  margin-right: 0.5em;
+}
+
+/* CONTACT */
+.contact-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+.contact-bar .rate {
+  font-family: var(--display);
+  font-size: 1.6rem;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.contact-bar .rate-label {
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.contact-info {
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.contact-info .selectable {
+  background: var(--accent-light);
+  padding: 0.1em 0.4em;
+  font-weight: 600;
+  user-select: all;
+  cursor: text;
+}
+
+/* FOOTER */
+footer {
+  padding-block: 2rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  border-top: 1px solid var(--border);
+}
+footer .byline {
+  font-family: var(--display);
+  font-size: 1rem;
+  color: var(--fg);
+  margin-bottom: 0.25rem;
+}
+
+/* CAPABILITIES LIST */
+.cap-list {
+  margin-top: 1rem;
+}
+.cap-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.cap-item:last-child { border-bottom: none; }
+.cap-bullet {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-top: 0.55em;
+}
+
+@media (max-width: 500px) {
+  .contact-bar { flex-direction: column; align-items: flex-start; }
+  .module-grid { grid-template-columns: 1fr; }
+  .deliverables { grid-template-columns: 1fr; }
+  .cred-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="label">Professional Development Services</div>
+  <h1>Municipal Code Enforcement Training</h1>
+  <p>Custom training modules for code enforcement, building inspection, and compliance staff. Built from your municipality's own Code of Ordinances. Designed for the field, not the filing cabinet.</p>
+  <div class="tagline">Think airplane safety card, not legal textbook.</div>
+</header>
+
+<!-- LIABILITY -->
+<section>
+  <h2>The Cost of Untrained Staff</h2>
+  <p>Municipal liability exposure from improperly trained enforcement staff is a documented and growing risk in Florida. Misapplication of measurement standards, incorrect documentation, failure to verify permit and licensing information, and inconsistent enforcement practices have resulted in 42 U.S.C. &sect;1983 claims, Fair Housing complaints, and negligence actions against Florida municipalities.</p>
+
+  <div class="callout">
+    <strong>One lawsuit costs six figures.</strong> Training costs a fraction. Every module I produce creates a documented, discoverable record that your municipality invested in proper training before an incident occurred.
+  </div>
+</section>
+
+<!-- MODULE CATALOG -->
+<section>
+  <h2>Training Module Catalog</h2>
+  <p>Each module is built to your municipality's specific ordinances and enforcement structure. No templates. No boilerplate. Every citation, every definition, every diagram is drawn from your code.</p>
+
+  <div class="module-grid">
+    <div class="module-card">
+      <span class="module-num">Module 1</span>
+      <div class="module-title">Knowing Your Own Code</div>
+      <p class="module-desc">How to locate, read, and interpret your municipality's Code of Ordinances. Structure, numbering conventions, definitions sections, and cross-references.</p>
+    </div>
+
+    <div class="module-card">
+      <span class="module-num">Module 2</span>
+      <div class="module-title">Jurisdiction &amp; Authority</div>
+      <p class="module-desc">What your badge authorizes and where it stops. Municipal vs. county vs. state authority. When to act, when to refer, and who to call.</p>
+    </div>
+
+    <a href="https://claude.ai/artifact/13QVezNrogoXRFtMqRWWt4" target="_blank" rel="noopener" class="module-link">
+    <div class="module-card has-link">
+      <span class="module-num">Module 3</span>
+      <div class="module-title">Measurement &amp; Evidence Standards</div>
+      <p class="module-desc">Where to stand, what to measure, and how your code defines the threshold. Equipment, positioning, documentation of readings, and per se violations.</p>
+      <span class="module-tag tag-sample">View Sample Module</span>
+    </div>
+    </a>
+
+    <div class="module-card">
+      <span class="module-num">Module 4</span>
+      <div class="module-title">Inspections Done Right</div>
+      <p class="module-desc">Field inspection procedures from arrival to closeout. What to check, what to photograph, what to write down, and what to leave alone.</p>
+    </div>
+
+    <div class="module-card">
+      <span class="module-num">Module 5</span>
+      <div class="module-title">Documentation &amp; Record Integrity</div>
+      <p class="module-desc">How to create records that survive legal scrutiny. File naming, contemporaneous notes, chain of custody for evidence, and records retention.</p>
+    </div>
+
+    <div class="module-card">
+      <span class="module-num">Module 6</span>
+      <div class="module-title">Communication with Complainants &amp; Officials</div>
+      <p class="module-desc">What to say, what not to say, and what creates liability when you say it wrong. Verbal commitments, email trails, and constituent interactions.</p>
+    </div>
+
+    <div class="module-card">
+      <span class="module-num">Module 7</span>
+      <div class="module-title">Permit &amp; Licensing Verification</div>
+      <p class="module-desc">How to verify that the contractor, the license, the permit, and the scope of work all match. DBPR lookups, entity verification, and red flags.</p>
+    </div>
+
+    <div class="module-card">
+      <span class="module-num">Module 8</span>
+      <div class="module-title">Timeliness &amp; Follow-Through</div>
+      <p class="module-desc">Response windows, re-inspection deadlines, escalation triggers, and what happens when cases go cold. How delay becomes liability.</p>
+    </div>
+
+    <div class="module-card">
+      <span class="module-num">Module 9</span>
+      <div class="module-title">Equal &amp; Nondiscriminatory Enforcement</div>
+      <p class="module-desc">Fair Housing obligations, selective enforcement claims, demographic patterns in complaint response, and documentation that proves consistency.</p>
+    </div>
+
+    <div class="module-card">
+      <span class="module-num">Module 10</span>
+      <div class="module-title">Escalation &amp; Emergency Authority</div>
+      <p class="module-desc">When ordinary enforcement isn't enough. Health and safety emergencies, fire code crossovers, imminent hazards, and interagency coordination.</p>
+    </div>
+
+    <div class="module-card capstone-card">
+      <span class="module-num">Capstone</span>
+      <div class="module-title">The Anatomy of an Avoidable Case</div>
+      <p class="module-desc">A complete walkthrough of a real enforcement failure pattern drawn from Florida municipal records. Every procedural error identified, every liability exposure mapped, every point where proper training would have changed the outcome.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT EACH MODULE INCLUDES -->
+<section>
+  <h2>What Every Module Includes</h2>
+  <div class="deliverables">
+    <div class="deliverable-item">
+      <svg class="deliverable-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 4h12v14H4z"/><path d="M7 8h6M7 11h4"/>
+      </svg>
+      <span>Direct citations from your municipality's own Code of Ordinances</span>
+    </div>
+    <div class="deliverable-item">
+      <svg class="deliverable-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="10" cy="10" r="6"/><path d="M10 7v3l2 2"/>
+      </svg>
+      <span>Plain-language definitions of every legal and technical term</span>
+    </div>
+    <div class="deliverable-item">
+      <svg class="deliverable-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="14" height="14" rx="1"/><path d="M3 8h14"/>
+      </svg>
+      <span>Visual reference guides with compliant vs. noncompliant examples</span>
+    </div>
+    <div class="deliverable-item">
+      <svg class="deliverable-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M6 10l3 3 5-6"/>
+      </svg>
+      <span>Step-by-step field procedures</span>
+    </div>
+    <div class="deliverable-item">
+      <svg class="deliverable-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 5h12M4 10h12M4 15h8"/>
+      </svg>
+      <span>Common-mistake scenarios with liability exposure notes</span>
+    </div>
+    <div class="deliverable-item">
+      <svg class="deliverable-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M5 3v14h10V7l-4-4H5z"/><path d="M11 3v4h4"/><path d="M7 12h6M7 15h4"/>
+      </svg>
+      <span>Tear-off field checklists for on-site use</span>
+    </div>
+  </div>
+  <p style="margin-top:1.25rem; font-size:0.95rem; color:var(--fg-muted)">Every module is designed for practical use: clear, visual, and written at a level that assumes no prior familiarity with the ordinance. Delivered in print-ready and digital formats, accessible and multilingual-ready.</p>
+</section>
+
+<!-- CAPABILITIES -->
+<section>
+  <h2>Full-Stack Production</h2>
+  <p>I am not a consultant who writes reports. I am a builder who ships finished products.</p>
+  <div class="cap-list">
+    <div class="cap-item">
+      <div class="cap-bullet"></div>
+      <span>Research and interpret your municipality's Code of Ordinances, Florida Statutes, and adopted building codes</span>
+    </div>
+    <div class="cap-item">
+      <div class="cap-bullet"></div>
+      <span>Produce print-ready and digital training modules from scratch</span>
+    </div>
+    <div class="cap-item">
+      <div class="cap-bullet"></div>
+      <span>Design and build custom web-based training tools, reference applications, and internal dashboards</span>
+    </div>
+    <div class="cap-item">
+      <div class="cap-bullet"></div>
+      <span>Create searchable digital versions of your ordinance with plain-language annotations</span>
+    </div>
+    <div class="cap-item">
+      <div class="cap-bullet"></div>
+      <span>Build automated compliance checklists and field reference applications</span>
+    </div>
+    <div class="cap-item">
+      <div class="cap-bullet"></div>
+      <span>Develop scenario-based training from real enforcement patterns in Florida municipalities</span>
+    </div>
+    <div class="cap-item">
+      <div class="cap-bullet"></div>
+      <span>Deliver all content in accessible, multilingual-ready formats</span>
+    </div>
+  </div>
+  <p style="margin-top:1rem; font-size:0.95rem;">Everything I deliver is original production. I do not subcontract. I do not use templates. Every module is built to your municipality's specific ordinances and enforcement structure.</p>
+</section>
+
+<!-- ABOUT -->
+<section>
+  <h2>About</h2>
+  <p>I design and produce educational training modules, digital systems, and instructional content. My work sits at the intersection of cybersecurity, AI systems, and municipal accountability.</p>
+
+  <div class="cred-grid">
+    <div class="cred-block">
+      <h3>The Multiverse School</h3>
+      <p>Current coursework in cybersecurity, AI ethics, systems defense, and data activism:</p>
+      <ul>
+        <li>Open Source Software</li>
+        <li>AI Spending &amp; Open Model Hosting</li>
+        <li>Cyberdeck: Consumer Device Rescue &amp; Defense</li>
+        <li>Scam &amp; Fraud Home Defense</li>
+        <li>Digital Identity Defense</li>
+        <li>Home Network Defense (multi-layer)</li>
+        <li>Agentic SDLC: Ship Software with AI Agent Teams</li>
+        <li>Critical Thinking &amp; Creativity with AI</li>
+        <li>Data Activism: Turn Data Into Power</li>
+        <li>RAG &amp; Memory Systems</li>
+      </ul>
+    </div>
+
+    <div class="cred-block">
+      <h3>Liberation Labs</h3>
+      <p>AI ethics, training, management, and accountability systems research. Grant-funded AI agent research project studying how AI systems learn, retain, and apply information, directly applicable to human training system design.</p>
+    </div>
+
+    <div class="cred-block">
+      <h3>Production Portfolio</h3>
+      <p>I independently design, code, and deploy full-stack web applications. Full portfolio available upon request.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section>
+  <h2>Engage</h2>
+  <p>I am available to discuss your department's training needs at your convenience.</p>
+
+  <div class="contact-bar">
+    <div>
+      <div class="rate">$175<span style="font-size:0.6em; color:var(--fg-muted)">/hr</span></div>
+      <div class="rate-label">Production Rate</div>
+    </div>
+    <div class="contact-info">
+      <div><span class="selectable">rhojsan@gmail.com</span></div>
+      <div><span class="selectable">(754) 222-0007</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="byline">Rachael Strader</div>
+  The Multiverse School &middot; Liberation Labs<br>
+  Municipal Systems &amp; Accountability Research
+  <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border); font-size:0.75rem; color:var(--fg-muted); line-height:1.6">
+    &copy; 2026 Rachael Strader. All rights reserved.<br>
+    All content, training materials, course structures, and original code on this site are proprietary works. Unauthorized reproduction, distribution, or derivative use is strictly prohibited without prior written consent.
+  </div>
+</footer>

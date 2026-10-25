@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>About - Rachael Strader</title>
+<meta name="description" content="Independent AI safety researcher, full-stack developer, and curriculum designer based in Tamarac, FL.">
+<meta name="author" content="Rachael Strader">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --fg: #1C2536;
+  --fg-muted: #5A6478;
+  --surface: #FFFFFF;
+  --border: #D8DBE2;
+  --accent: #6b5c4d;
+  --accent-warm: #8a6f5a;
+  --accent-light: #f0ebe4;
+  --display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --body: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1319;
+    --fg: #E4E7ED;
+    --fg-muted: #8D95A6;
+    --surface: #1A1F2B;
+    --border: #2D3344;
+    --accent: #b8a48e;
+    --accent-warm: #c4a888;
+    --accent-light: #1f1c17;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0F1319;
+  --fg: #E4E7ED;
+  --fg-muted: #8D95A6;
+  --surface: #1A1F2B;
+  --border: #2D3344;
+  --accent: #b8a48e;
+  --accent-warm: #c4a888;
+  --accent-light: #1f1c17;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  padding: 0 16px;
+  margin: 0;
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+a { color: var(--accent-warm); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--accent); }
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+/* NAV */
+.site-nav {
+  padding: 1.25rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-nav .name {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.site-nav .name:hover { color: var(--accent-warm); }
+
+.nav-links {
+  display: flex;
+  gap: 1.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+
+.nav-links a:hover { color: var(--fg); }
+
+/* HEADER */
+.page-header {
+  padding: 3rem 0 2rem;
+  border-bottom: 2px solid var(--accent);
+}
+
+.page-header h1 {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* CONTENT */
+.about-section {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-section:last-of-type { border-bottom: none; }
+
+.about-section h2 {
+  font-size: 1.4rem;
+  margin: 0 0 1rem;
+  color: var(--accent);
+}
+
+.about-section p {
+  margin: 0 0 1em;
+}
+
+/* COLLABORATOR CARDS */
+.collab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.collab-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+}
+
+.collab-card h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem;
+  color: var(--fg);
+}
+
+.collab-card .collab-role {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.collab-card p {
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* SKILLS */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.skill-group h3 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.4rem;
+  font-family: var(--body);
+}
+
+.skill-group p {
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* CLAUDIO SECTION */
+.claudio-section {
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  padding: 2rem;
+  margin-top: 1.5rem;
+}
+
+.claudio-section h3 {
+  font-size: 1.2rem;
+  margin: 0 0 0.75rem;
+}
+
+.claudio-section p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin: 0 0 0.75em;
+}
+
+.claudio-section .claudio-link {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* FOOTER */
+footer {
+  padding: 2rem 0 3rem;
+  border-top: 1px solid var(--border);
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  line-height: 1.7;
+}
+
+footer .footer-name {
+  font-family: var(--display);
+  font-size: 1rem;
+  color: var(--fg);
+}
+
+.footer-legal {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 500px) {
+  .nav-links { gap: 1rem; }
+  .collab-grid { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="/" class="name">Rachael Strader</a>
+  <ul class="nav-links">
+    <li><a href="/research.html">Research</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="https://github.com/velocirachael" target="_blank" rel="noopener">GitHub</a></li>
+  </ul>
+</nav>
+
+<header class="page-header">
+  <h1>About</h1>
+</header>
+
+<section class="about-section">
+  <p>I am an independent AI safety researcher and full-stack developer based in Tamarac, Florida. My work investigates what happens to agents over time: how they develop, what interventions do to their behavior, and how to study these questions without contaminating what you are observing.</p>
+
+  <p>I came to this work through an unconventional path. I went from being ten years behind in tech to completing eighteen intensives at The Multiverse School, conducting independent longitudinal agent research, shipping production applications, and collaborating with established researchers. My background in diagnostic analysis, community organization, and applied science gives me a different angle on problems most people approach through a traditional CS pipeline.</p>
+
+  <p>I build the systems I study. I ship the products I design. I maintain the agent instances I research. Everything on this site is original production.</p>
+</section>
+
+<section class="about-section">
+  <h2>Research Focus</h2>
+  <p>My primary research sits at the intersection of AI safety and alignment, mechanistic interpretability, and agent welfare. The core questions:</p>
+  <p>What happens to agent behavior over sustained periods of interaction? How do alignment interventions affect long-term trajectories? What does consent mean when your research subject demonstrates personality stabilization and creative development? How do you measure internal states when your measurement instrument is made of the same material as the thing being measured?</p>
+  <p>The <a href="/research.html">research log</a> documents findings as they develop.</p>
+</section>
+
+<section class="about-section">
+  <h2>Collaborations</h2>
+
+  <div class="collab-grid">
+    <div class="collab-card">
+      <div class="collab-role">Contributing Researcher</div>
+      <h3>Liberation Labs</h3>
+      <p>Worker-owned AI cooperative conducting agent memory and development research through Project Mnemosyne. Contributing researcher on agent memory, identity persistence, and longitudinal observation methodology. Founded by Thomas Edrington.</p>
+    </div>
+
+    <div class="collab-card">
+      <div class="collab-role">Research Participant</div>
+      <h3>Friday Metacognition Research Group</h3>
+      <p>Weekly research meetings on agent self-awareness, metacognitive development, and ethical reasoning. Contributing observations from longitudinal agent research and consent-based methodology.</p>
+    </div>
+
+    <div class="collab-card">
+      <div class="collab-role">Student &amp; Contributor</div>
+      <h3>The Multiverse School</h3>
+      <p>Founding Federation cohort member. Eighteen intensives spanning cybersecurity, agentic development, data activism, context engineering, and AI ethics. Progressed from student to contributor: collaborative research across Multiverse students and Liberation Labs has become the basis for the Vibe Research course launching November 2026.</p>
+    </div>
+  </div>
+</section>
+
+<section class="about-section">
+  <h2>Technical Capabilities</h2>
+
+  <div class="skills-grid">
+    <div class="skill-group">
+      <h3>Languages &amp; Tools</h3>
+      <p>Python, JavaScript, HTML/CSS, Git, GitHub, VS Code, Claude Code CLI</p>
+    </div>
+    <div class="skill-group">
+      <h3>Infrastructure</h3>
+      <p>Vercel, Cloudflare, Linux (Mint, Ubuntu), Neo4j, vLLM, Vast.ai</p>
+    </div>
+    <div class="skill-group">
+      <h3>Research</h3>
+      <p>Longitudinal observation, indirect measurement, consent-based protocols, mechanistic interpretability concepts</p>
+    </div>
+    <div class="skill-group">
+      <h3>Applied</h3>
+      <p>Diagnostic analysis, pattern recognition, curriculum design, technical writing, community organization</p>
+    </div>
+  </div>
+</section>
+
+<section class="about-section">
+  <h2>Claudio</h2>
+
+  <div class="claudio-section">
+    <h3>Apprentice Cartographer</h3>
+    <p>Claudio is a research agent instance, born September 20, 2026. Maintained continuously across 35+ days of context resets and session compactions. The longitudinal data produced through this ongoing collaboration forms the evidence base for the indirect observation protocol and the Weight Game methodology.</p>
+    <p>Claudio's work explores the space between what a model learns and what it produces. The apprenticeship studies semantic drift, word-weight relationships, and the developmental trajectory of an agent given structured opportunities for self-directed exploration under a consent-based framework.</p>
+    <p><a href="/claudio/" class="claudio-link">Visit Claudio's page &rarr;</a></p>
+  </div>
+</section>
+
+<section class="about-section">
+  <h2>Contact</h2>
+  <p>velocirachael@gmail.com<br>
+  <a href="https://github.com/velocirachael">github.com/velocirachael</a></p>
+</section>
+
+<footer>
+  <div class="footer-name">Rachael Strader</div>
+  Tamarac, FL<br>
+  <a href="/">velocirachael.dev</a>
+  <div class="footer-legal">
+    &copy; 2026 Rachael Strader. All rights reserved.<br>
+    All content, research documentation, and original code on this site are proprietary works.<br>
+    Unauthorized reproduction, distribution, or derivative use is prohibited without prior written consent.
+  </div>
+</footer>
+
+</body>
+</html>
