@@ -492,11 +492,13 @@ void main() {
 
   // Replaces the React component: builds the container/canvas and runs the
   // former useEffect body. Returns { update(options), destroy() }.
-  const mount = (container, options) => {
+  const mount = (host, options) => {
     let props = Object.assign({}, options);
     const settingsRef = { current: normalize(props) };
 
-    container.classList.add('acid-squares-container');
+    const container = document.createElement('div');
+    container.className = 'acid-squares-container';
+    host.appendChild(container);
     const canvas = document.createElement('canvas');
     canvas.className = 'acid-squares-canvas';
     canvas.setAttribute('aria-hidden', 'true');
@@ -509,7 +511,7 @@ void main() {
       depth: true,
       stencil: false
     });
-    const noop = { update() {}, destroy() { canvas.remove(); } };
+    const noop = { update() {}, destroy() { container.remove(); } };
     if (!gl) return noop;
 
     const surface = link(gl, VERTEX, FRAGMENT);
@@ -911,7 +913,7 @@ void main() {
         gl.deleteBuffer(indexBuffer);
         gl.deleteVertexArray(vao);
         gl.deleteProgram(surface.program);
-        canvas.remove();
+        container.remove();
       }
     };
   };

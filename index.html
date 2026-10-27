@@ -161,8 +161,8 @@ a:hover { color: var(--accent); }
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to right, transparent 30%, #000 80%);
-  mask-image: linear-gradient(to right, transparent 30%, #000 80%);
+  -webkit-mask-image: linear-gradient(to right, transparent 50%, #000 85%);
+  mask-image: linear-gradient(to right, transparent 50%, #000 85%);
 }
 
 .acid-squares-container {
@@ -627,20 +627,19 @@ footer {
   var el = document.getElementById('hero-fx');
   if (!el || !window.AcidSquares) return;
   var dark = window.matchMedia('(prefers-color-scheme: dark)');
+  // Fern greens and warm browns: pale tiles on the cream page, glowing on dark.
+  var PALETTE = {
+    light: { color: '#ECEEE2', accentColor: '#4F8A2B', secondaryColor: '#8A6F5A' },
+    dark: { color: '#0F1319', accentColor: '#7DBE4A', secondaryColor: '#C4A888' }
+  };
   function themed() {
-    var cs = getComputedStyle(document.documentElement);
-    var isDark = document.documentElement.dataset.theme === 'dark' ||
-      (document.documentElement.dataset.theme !== 'light' && dark.matches);
-    return {
-      color: cs.getPropertyValue('--bg').trim(),
-      accentColor: cs.getPropertyValue('--accent-gold').trim(),
-      secondaryColor: cs.getPropertyValue('--accent-warm').trim(),
-      lightMode: !isDark
-    };
+    var theme = document.documentElement.dataset.theme;
+    var isDark = theme === 'dark' || (theme !== 'light' && dark.matches);
+    return Object.assign({ lightMode: !isDark }, isDark ? PALETTE.dark : PALETTE.light);
   }
   var fx = window.AcidSquares.mount(el, Object.assign({
     tileSize: 0.65, gap: 0.07, roundness: 0.3, rotation: 35, waves: 1, pulse: 0.5,
-    lighting: 'split', tilt: 0.7, grain: 0.03, bulge: 0.62, gloss: 0.59, opacity: 0.9
+    lighting: 'split', tilt: 0.7, grain: 0.03, bulge: 0.62, gloss: 0.59, opacity: 0.9, fade: 0.4
   }, themed()));
   dark.addEventListener('change', function () { fx.update(themed()); });
 })();
