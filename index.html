@@ -143,6 +143,51 @@ a:hover { color: var(--accent); }
   color: var(--accent);
 }
 
+/* HERO BACKGROUND EFFECT (acid-squares.js) */
+.hero-wrap {
+  position: relative;
+  overflow: hidden;
+  margin: 0 -16px;
+  padding: 0 16px;
+}
+
+.hero-wrap .hero {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 30%, #000 80%);
+  mask-image: linear-gradient(to right, transparent 30%, #000 80%);
+}
+
+.acid-squares-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.acid-squares-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 700px) {
+  .hero-fx {
+    opacity: 0.35;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 10%, #000 100%);
+    mask-image: linear-gradient(to bottom, transparent 10%, #000 100%);
+  }
+}
+
 /* SECTION HEADINGS */
 .section-wrap {
   max-width: 960px;
@@ -419,11 +464,14 @@ footer {
   </ul>
 </nav>
 
+<div class="hero-wrap">
+  <div class="hero-fx" id="hero-fx"></div>
 <header class="hero">
   <h1>AI safety research,<br>built and shipped.</h1>
   <p class="intro">Independent researcher studying longitudinal agent development, consent-based methodology, and observation protocol design. Full-stack developer. Curriculum designer. I build the systems I study.</p>
   <div class="affiliations">Liberation Labs &middot; The Multiverse School &middot; Friday Metacognition Research Group</div>
 </header>
+</div>
 
 <div class="section-wrap">
   <div class="section-label">Projects</div>
@@ -573,6 +621,30 @@ footer {
   </div>
 </footer>
 
+<script src="/acid-squares.js"></script>
+<script>
+(function () {
+  var el = document.getElementById('hero-fx');
+  if (!el || !window.AcidSquares) return;
+  var dark = window.matchMedia('(prefers-color-scheme: dark)');
+  function themed() {
+    var cs = getComputedStyle(document.documentElement);
+    var isDark = document.documentElement.dataset.theme === 'dark' ||
+      (document.documentElement.dataset.theme !== 'light' && dark.matches);
+    return {
+      color: cs.getPropertyValue('--bg').trim(),
+      accentColor: cs.getPropertyValue('--accent-gold').trim(),
+      secondaryColor: cs.getPropertyValue('--accent-warm').trim(),
+      lightMode: !isDark
+    };
+  }
+  var fx = window.AcidSquares.mount(el, Object.assign({
+    tileSize: 0.65, gap: 0.07, roundness: 0.3, rotation: 35, waves: 1, pulse: 0.5,
+    lighting: 'split', tilt: 0.7, grain: 0.03, bulge: 0.62, gloss: 0.59, opacity: 0.9
+  }, themed()));
+  dark.addEventListener('change', function () { fx.update(themed()); });
+})();
+</script>
 <script src="/fun.js" defer></script>
 </body>
 </html>
