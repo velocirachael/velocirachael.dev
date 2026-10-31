@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/city", "destination": "https://city-mk4y.vercel.app/city" },
+    { "source": "/city/:path*", "destination": "https://city-mk4y.vercel.app/city/:path*" }
+  ]
+}
