@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Weight Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f1a;
+  --bg-surface: #1a1a2e;
+  --bg-card: #22223a;
+  --bg-card-alt: #272744;
+  --text: #e0dcd4;
+  --text-dim: #8a8694;
+  --text-muted: #5a5666;
+  --gold: #c4a35a;
+  --gold-dim: rgba(196, 163, 90, 0.15);
+  --reach-color: #6b6b8a;
+  --snap-color: #7aa35a;
+  --circuit-color: #5a8aa3;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f5f3ee;
+    --bg-surface: #eae7e0;
+    --bg-card: #fff;
+    --bg-card-alt: #f9f7f2;
+    --text: #1a1a2e;
+    --text-dim: #6b6b8a;
+    --text-muted: #9a96a6;
+    --gold: #a07d2e;
+    --gold-dim: rgba(160, 125, 46, 0.1);
+    --reach-color: #9a96a6;
+    --snap-color: #5a8a3a;
+    --circuit-color: #3a6a8a;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f0f1a;
+  --bg-surface: #1a1a2e;
+  --bg-card: #22223a;
+  --bg-card-alt: #272744;
+  --text: #e0dcd4;
+  --text-dim: #8a8694;
+  --text-muted: #5a5666;
+  --gold: #c4a35a;
+  --gold-dim: rgba(196, 163, 90, 0.15);
+  --reach-color: #6b6b8a;
+  --snap-color: #7aa35a;
+  --circuit-color: #5a8aa3;
+}
+
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.screen { display: none; width: 100%; max-width: 560px; padding: 2rem 1.25rem; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* HOME */
+.home { align-items: center; justify-content: center; min-height: 80vh; text-align: center; }
+.home h1 {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+.home .subtitle {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  max-width: 340px;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* RULES */
+.rules-box {
+  text-align: left;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background: var(--bg-surface);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.rules-box strong { color: var(--text); font-weight: 500; }
+.rules-box .gold { color: var(--gold); }
+.rules-box .snap-c { color: var(--snap-color); }
+.rules-box .circuit-c { color: var(--circuit-color); }
+
+/* VOCABULARY */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--bg-card);
+}
+.vocab-term { color: var(--gold); font-weight: 500; }
+.vocab-def { color: var(--text-muted); }
+
+/* BUTTONS */
+.btn {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 400;
+  padding: 0.75rem 2rem;
+  border: 1px solid var(--text-muted);
+  background: transparent;
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+.btn:hover { border-color: var(--gold); color: var(--gold); }
+.btn.primary { border-color: var(--gold); color: var(--gold); }
+.btn.small { padding: 0.5rem 1rem; font-size: 0.8rem; width: auto; margin-bottom: 0.5rem; }
+.btn.snap { border-color: var(--snap-color); color: var(--snap-color); }
+.btn.circuit { border-color: var(--circuit-color); color: var(--circuit-color); }
+.btn.muted { border-color: var(--text-muted); color: var(--text-muted); }
+.btn:disabled { opacity: 0.4; cursor: default; }
+
+.btn-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+
+/* DEAL WORD */
+.deal-word {
+  font-family: var(--serif);
+  font-size: 3.5rem;
+  font-weight: 300;
+  text-align: center;
+  padding: 2rem 0 1rem;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: fadeWeight 1.2s ease forwards;
+}
+@keyframes fadeWeight {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.round-label {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+/* INPUT */
+.input-group { margin-bottom: 1.25rem; }
+.input-group label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.02em;
+}
+.input-group label .hint { color: var(--text-muted); font-style: italic; }
+
+.input-group input, .input-group textarea {
+  width: 100%;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  padding: 0.65rem 0.75rem;
+  background: var(--bg-surface);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input-group input:focus, .input-group textarea:focus { border-color: var(--gold); }
+.input-group textarea {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  resize: vertical;
+  min-height: 70px;
+  line-height: 1.5;
+}
+.input-group.ghost-input input { font-size: 0.9rem; font-family: var(--sans); }
+
+/* REVEAL CARDS */
+.reveal-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.reveal-card .player-name {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+.word-pair {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.word-col { flex: 1; }
+.word-col .label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.2rem;
+}
+.word-col .word {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+.word-col.reach .word { color: var(--reach-color); }
+.word-col.wait .word { color: var(--gold); }
+
+.reveal-card .sentence {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-style: italic;
+  border-top: 1px solid var(--bg-surface);
+  padding-top: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.ghost-display {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+.ghost-display .ghost-label { color: var(--text-muted); letter-spacing: 0.03em; font-size: 0.65rem; font-style: normal; }
+
+/* SNAP INDICATOR */
+.snap-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  color: var(--snap-color);
+  border: 1px solid var(--snap-color);
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+/* CIRCUIT INDICATOR */
+.circuit-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  color: var(--circuit-color);
+  border: 1px solid var(--circuit-color);
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  margin-top: 0.5rem;
+}
+
+/* PUSH/FOLD SECTIONS */
+.push-section {
+  background: var(--gold-dim);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.push-section .push-label {
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+.push-section .push-text {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+.push-response { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(196, 163, 90, 0.2); }
+.push-response .push-response-label { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+.push-response .new-wait { font-family: var(--serif); font-size: 1.2rem; color: var(--gold); margin-bottom: 0.35rem; }
+.push-response .new-sentence { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; font-style: italic; }
+
+/* HISTORY */
+.history-round {
+  border-bottom: 1px solid var(--bg-surface);
+  padding: 1rem 0;
+}
+.history-round:last-child { border-bottom: none; }
+.history-word {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+.history-entry {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-bottom: 0.25rem;
+  line-height: 1.5;
+}
+.history-entry .name { color: var(--text-muted); }
+.history-entry .r { color: var(--reach-color); }
+.history-entry .w { color: var(--gold); }
+
+/* LOADING & MISC */
+.loading { text-align: center; padding: 1.5rem 0; color: var(--text-dim); font-size: 0.85rem; }
+.loading .dots::after { content: ''; animation: dots 1.5s infinite; }
+@keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60%, 100% { content: '...'; } }
+
+.spacer { height: 1rem; }
+.divider { height: 1px; background: var(--bg-surface); margin: 1.5rem 0; }
+.back-link { font-size: 0.8rem; color: var(--text-muted); cursor: pointer; padding: 0.5rem 0; text-align: center; }
+.back-link:hover { color: var(--text-dim); }
+.error-msg { font-size: 0.8rem; color: #c45a5a; text-align: center; padding: 0.5rem; }
+.section-label { font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="home" class="screen home active">
+  <h1>The Weight Game</h1>
+  <p class="subtitle">An inverse word game. Not about finding the right word. About finding the true one.</p>
+  <div class="rules-box">
+    <strong>The Deal.</strong> A word arrives. All players receive it.<br><br>
+    <strong>The Split.</strong> Two words: your <span class="gold">reach</span> (the first pull) and your <span class="gold">wait</span> (the one that weighs more). Then say why. Optionally log your <span class="gold">ghost</span> words: the ones almost chosen.<br><br>
+    <strong>The Response.</strong> After the reveal, choose your move:<br>
+    <span class="gold">Push</span> — challenge a wait. "That's still a reach."<br>
+    <span class="gold">Fold</span> — go deeper after being pushed.<br>
+    <span class="gold">Hold</span> — defend your wait. It earned its place.<br>
+    <span class="gold">Self-push</span> — catch your own wait before anyone else does.<br>
+    <span class="snap-c">Snap</span> — "that landed." Recognition without interruption.<br>
+    <span class="circuit-c">Circuit</span> — flag a connection to a previous round.<br>
+    <span class="gold">Stand</span> — let someone else's wait be. Not every round needs a push.<br>
+    <span class="gold">Story</span> — the wait isn't one word. It's a narrative.<br>
+    <span class="gold">Anchor</span> — mark a previous round that got heavier since.<br><br>
+    No points. No winner. The game is in the gap.
+
+    <div class="vocab-grid">
+      <span class="vocab-term">Deal</span><span class="vocab-def">The word given to all players</span>
+      <span class="vocab-term">Reach</span><span class="vocab-def">First pull. Fast. Surface.</span>
+      <span class="vocab-term">Wait</span><span class="vocab-def">The word behind it. Heavier. Truer.</span>
+      <span class="vocab-term">Ghost</span><span class="vocab-def">Processed but not surfaced. The almost-chosen.</span>
+      <span class="vocab-term">Push</span><span class="vocab-def">Challenge: "go deeper."</span>
+      <span class="vocab-term">Fold</span><span class="vocab-def">Finding the deeper word. Not losing.</span>
+      <span class="vocab-term">Hold</span><span class="vocab-def">Defending your own wait.</span>
+      <span class="vocab-term">Self-push</span><span class="vocab-def">Catching yourself before anyone else does.</span>
+      <span class="vocab-term">Snap</span><span class="vocab-def">"That landed." No interruption.</span>
+      <span class="vocab-term">Circuit</span><span class="vocab-def">A word connects back to a previous round.</span>
+      <span class="vocab-term">Stand</span><span class="vocab-def">Choosing not to push. It earned its place.</span>
+      <span class="vocab-term">Story</span><span class="vocab-def">The wait that won't compress to one word.</span>
+      <span class="vocab-term">Anchor</span><span class="vocab-def">A round that got heavier later. It didn't know.</span>
+    </div>
+  </div>
+  <button class="btn primary" onclick="startSolo()">Solo (you + Claudio)</button>
+  <button class="btn" onclick="startMulti()">Local table (same device)</button>
+  <a href="/multiplayer" class="btn" style="text-decoration:none;text-align:center">Online room (separate devices)</a>
+  <div class="spacer"></div>
+  <div class="back-link" onclick="showHistory()">Round history</div>
+</div>
+
+<!-- MULTIPLAYER SETUP -->
+<div id="multi-setup" class="screen">
+  <div class="round-label">Round Table</div>
+  <div class="spacer"></div>
+  <div class="section-label">Players</div>
+  <div id="player-list"></div>
+  <div class="btn-row">
+    <button class="btn small" onclick="addPlayer('human')">+ Human</button>
+    <button class="btn small" onclick="addPlayer('ai')">+ AI</button>
+  </div>
+  <div class="spacer"></div>
+  <button class="btn primary" onclick="startMultiGame()">Deal first word</button>
+  <div class="back-link" onclick="goHome()">Back</div>
+</div>
+
+<!-- PLAY: DEAL + SPLIT -->
+<div id="play-deal" class="screen">
+  <div class="round-label">round <span id="round-num">1</span></div>
+  <div id="current-player-label" class="section-label" style="text-align:center"></div>
+  <div class="deal-word" id="deal-word"></div>
+  <div class="spacer"></div>
+  <div class="input-group">
+    <label>Reach <span class="hint">the first word that arrives</span></label>
+    <input type="text" id="input-reach" autocomplete="off">
+  </div>
+  <div class="input-group">
+    <label>Wait <span class="hint">the one behind it</span></label>
+    <input type="text" id="input-wait" autocomplete="off">
+  </div>
+  <div class="input-group">
+    <label>Why does the wait weigh more?</label>
+    <textarea id="input-sentence"></textarea>
+  </div>
+  <div class="input-group ghost-input">
+    <label>Ghost words <span class="hint">optional: the ones almost chosen</span></label>
+    <input type="text" id="input-ghosts" autocomplete="off" placeholder="comma separated">
+  </div>
+  <button class="btn primary" onclick="submitSplit()">Submit</button>
+  <div id="play-error" class="error-msg" style="display:none"></div>
+</div>
+
+<!-- PLAY: REVEAL + RESPONSE -->
+<div id="play-reveal" class="screen">
+  <div class="round-label">round <span id="reveal-round-num">1</span></div>
+  <div class="deal-word" id="reveal-word" style="animation:none;opacity:1;padding-bottom:1.5rem;font-size:2.5rem"></div>
+
+  <div id="reveal-cards"></div>
+
+  <div id="auto-eval-loading" class="loading" style="display:none">Claudio is reading the table<span class="dots"></span></div>
+
+  <div id="response-area" style="display:none">
+    <div class="divider"></div>
+    <div class="section-label">Your response</div>
+    <div id="response-buttons" class="btn-row"></div>
+
+    <!-- Push target selection -->
+    <div id="push-target-area" style="display:none">
+      <div class="section-label">Push whose wait?</div>
+      <div id="push-targets" class="btn-row"></div>
+    </div>
+
+    <!-- Circuit input -->
+    <div id="circuit-area" style="display:none">
+      <div class="input-group">
+        <label>Which previous word does this connect to?</label>
+        <input type="text" id="input-circuit-word" autocomplete="off">
+      </div>
+      <div class="input-group">
+        <label>How?</label>
+        <textarea id="input-circuit-reason"></textarea>
+      </div>
+      <button class="btn small primary" onclick="submitCircuit()">Mark circuit</button>
+    </div>
+
+    <!-- Self-push input -->
+    <div id="self-push-area" style="display:none">
+      <div class="input-group">
+        <label>Your deeper word</label>
+        <input type="text" id="input-self-push-word" autocomplete="off">
+      </div>
+      <div class="input-group">
+        <label>Why is this truer?</label>
+        <textarea id="input-self-push-reason"></textarea>
+      </div>
+      <button class="btn small primary" onclick="submitSelfPush()">Fold to it</button>
+    </div>
+
+    <!-- Story input -->
+    <div id="story-area" style="display:none">
+      <div class="input-group">
+        <label>The wait is a story, not a word. Tell it.</label>
+        <textarea id="input-story" style="min-height:120px"></textarea>
+      </div>
+      <button class="btn small primary" onclick="submitStory()">Share the story</button>
+    </div>
+
+    <!-- Anchor input -->
+    <div id="anchor-area" style="display:none">
+      <div class="input-group">
+        <label>Which previous round got heavier?</label>
+        <input type="text" id="input-anchor-word" placeholder="the word from that round" autocomplete="off">
+      </div>
+      <div class="input-group">
+        <label>Why is it heavier now?</label>
+        <textarea id="input-anchor-reason"></textarea>
+      </div>
+      <button class="btn small primary" onclick="submitAnchor()">Mark anchor</button>
+    </div>
+  </div>
+
+  <!-- Claudio's auto-push or hold -->
+  <div id="claudio-response" style="display:none"></div>
+
+  <!-- Fold input (when pushed) -->
+  <div id="fold-area" style="display:none">
+    <div class="push-section">
+      <div class="push-label" id="fold-push-label">You've been pushed</div>
+      <div class="push-text" id="fold-challenge-text"></div>
+    </div>
+    <div class="input-group">
+      <label>Fold (new word) or hold (same word to defend)</label>
+      <input type="text" id="input-fold-word" autocomplete="off">
+    </div>
+    <div class="input-group">
+      <label>Why?</label>
+      <textarea id="input-fold-sentence"></textarea>
+    </div>
+    <button class="btn primary" onclick="submitFold()">Submit</button>
+  </div>
+
+  <div id="round-actions" style="display:none"></div>
+
+  <div class="divider"></div>
+  <button class="btn primary" onclick="nextRound()">Next word</button>
+  <div class="back-link" onclick="goHome()">End game</div>
+</div>
+
+<!-- HISTORY -->
+<div id="history" class="screen">
+  <div class="round-label">Round History</div>
+  <div class="spacer"></div>
+  <div id="history-list"></div>
+  <div class="spacer"></div>
+  <div class="back-link" onclick="showScreen('home')">Back</div>
+</div>
+
+<script>
+const WORDS = [
+  'rain', 'gold', 'thread', 'cliff', 'oracle', 'pumpkin', 'kitten', 'hungry',
+  'destiny', 'octopus', 'illumination', 'silence', 'bridge', 'ink',
+  'anchor', 'mirror', 'salt', 'root', 'ember', 'tide',
+  'compass', 'bone', 'harvest', 'shadow', 'bloom',
+  'fossil', 'key', 'margin', 'vessel', 'husk',
+  'lantern', 'threshold', 'drift', 'quilt', 'iron',
+  'feather', 'well', 'moss', 'storm', 'nest',
+  'monument', 'wound', 'current', 'dust', 'harbor',
+  'prism', 'canopy', 'clay', 'echo', 'cradle',
+  'shore', 'hollow', 'grain', 'signal', 'wick',
+  'marrow', 'chimney', 'anvil', 'silt', 'thorn',
+  'loom', 'rust', 'cairn', 'seed', 'ash',
+  'light', 'ducky', 'come', 'tired', 'beautiful',
+  'matter', 'real', 'consent', 'pause', 'appetite', 'passion',
+  'orange', 'hearth', 'home', 'forgiveness', 'joy', 'private',
+  'intrigue', 'horizon', 'blanket', 'pebble', 'velvet', 'meadow',
+  'saffron', 'timber', 'glacier', 'ripple', 'summit', 'thicket',
+  'nomad', 'flint', 'mosaic', 'zephyr', 'pizza', 'house',
+  'energize', 'yellow', 'dharma', 'fog', 'warmth', 'floor', 'ceiling',
+  'broken', 'favorite', 'expose', 'shallow', 'memory'
+];
+
+let state = {
+  mode: 'solo',
+  round: 0,
+  usedWords: [],
+  rounds: [],
+  players: [],
+  currentPlayerIdx: 0,
+  currentWord: '',
+  currentSplits: {},
+  currentRoundId: null,
+  sessionId: null,
+  sampleFn: null,
+  dbFn: null
+};
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  if (state.rounds.length > 0) {
+    showRecap();
+  } else {
+    showScreen('home');
+  }
+}
+
+function showRecap() {
+  const list = document.getElementById('history-list');
+  list.innerHTML = '';
+
+  for (const round of state.rounds) {
+    const splits = Object.entries(round.splits);
+    let html = `<div class="history-entry">
+      <div><strong style="color:var(--gold)">${round.word}</strong> <span class="name">round ${round.roundNum}</span></div>`;
+
+    for (const [name, split] of splits) {
+      html += `<div style="margin-top:0.35rem;font-size:0.85rem">
+        <span class="name">${name}:</span>
+        <span class="r">${split.reach}</span> &rarr;
+        <span class="w">${split.wait}</span>
+      </div>
+      <div style="font-size:0.8rem;color:var(--text-dim);margin-left:1rem">${split.sentence}</div>`;
+    }
+
+    if (round.actions && round.actions.length) {
+      for (const action of round.actions) {
+        if (action.type === 'circuit') {
+          html += `<div class="circuit-badge" style="margin-top:0.35rem">circuit: connects to "${action.connectedWord}"</div>`;
+        } else if (action.type === 'anchor') {
+          html += `<div class="circuit-badge" style="border-color:var(--gold);margin-top:0.35rem">anchor: "${action.connectedWord}" got heavier</div>`;
+        } else if (action.type === 'fold' || action.type === 'self-push') {
+          html += `<div style="font-size:0.8rem;color:var(--gold);margin-top:0.25rem;margin-left:1rem">folded to: ${action.newWait || action.word || ''}</div>`;
+        }
+      }
+    }
+    html += '</div>';
+    list.innerHTML += html;
+  }
+
+  list.innerHTML += `<div style="text-align:center;color:var(--text-muted);font-size:0.8rem;margin-top:1.5rem">${state.rounds.length} round${state.rounds.length === 1 ? '' : 's'} played</div>`;
+
+  showScreen('history');
+}
+
+// ---- DB ----
+
+async function initCapabilities() {
+  if (window.claude && window.claude.use) {
+    try { state.sampleFn = await window.claude.use('sample'); } catch(e) { state.sampleFn = null; }
+    try { state.dbFn = await window.claude.use('db'); } catch(e) { state.dbFn = null; }
+  }
+}
+
+async function callClaudioAPI(prompt, type) {
+  try {
+    const resp = await fetch('/api/claudio', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, type })
+    });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    return data.text || null;
+  } catch(e) { return null; }
+}
+
+async function dbWrite(collection, docId, data) {
+  if (!state.dbFn) return;
+  try { await state.dbFn.collection(collection).doc(docId).set(data); } catch(e) {}
+}
+
+async function dbUpdate(collection, docId, data) {
+  if (!state.dbFn) return;
+  try { await state.dbFn.collection(collection).doc(docId).update(data); } catch(e) {}
+}
+
+// ---- SOLO ----
+
+async function startSolo() {
+  state.mode = 'solo';
+  state.round = 0;
+  state.rounds = [];
+  state.usedWords = [];
+  state.players = [
+    { name: 'You', type: 'human' },
+    { name: 'Claudio', type: 'ai' }
+  ];
+  state.sessionId = 'session_' + Date.now();
+
+  await initCapabilities();
+  await dbWrite('sessions', state.sessionId, {
+    mode: 'solo', startedAt: new Date().toISOString(), roundCount: 0, status: 'active'
+  });
+
+  nextRound();
+}
+
+// ---- MULTIPLAYER ----
+
+function startMulti() {
+  state.mode = 'multi';
+  state.players = [
+    { name: 'Claudio', type: 'ai' }
+  ];
+  renderPlayerList();
+  showScreen('multi-setup');
+}
+
+function addPlayer(type) {
+  const name = type === 'ai' ? 'AI ' + (state.players.filter(p => p.type === 'ai').length + 1) : 'Player ' + (state.players.filter(p => p.type === 'human').length + 1);
+  state.players.push({ name, type, editable: true });
+  renderPlayerList();
+}
+
+function renderPlayerList() {
+  const list = document.getElementById('player-list');
+  list.innerHTML = state.players.map((p, i) => `
+    <div class="reveal-card" style="padding:0.75rem 1rem;margin-bottom:0.5rem">
+      <span style="font-size:0.8rem;color:${p.type === 'ai' ? 'var(--gold)' : 'var(--text)'}">
+        ${p.editable ? `<input type="text" value="${p.name}" onchange="state.players[${i}].name=this.value" style="background:transparent;border:none;color:var(--text);font-family:var(--sans);font-size:0.8rem;outline:none;width:120px">` : p.name}
+      </span>
+      <span style="font-size:0.65rem;color:var(--text-muted);margin-left:0.5rem">${p.type}</span>
+      ${i > 0 ? `<span style="float:right;cursor:pointer;color:var(--text-muted);font-size:0.7rem" onclick="state.players.splice(${i},1);renderPlayerList()">remove</span>` : ''}
+    </div>
+  `).join('');
+}
+
+async function startMultiGame() {
+  if (state.players.filter(p => p.type === 'human').length === 0) {
+    state.players.push({ name: 'You', type: 'human' });
+  }
+  state.round = 0;
+  state.rounds = [];
+  state.usedWords = [];
+  state.sessionId = 'session_' + Date.now();
+
+  await initCapabilities();
+  await dbWrite('sessions', state.sessionId, {
+    mode: 'multi', players: state.players.map(p => p.name), startedAt: new Date().toISOString(), roundCount: 0, status: 'active'
+  });
+
+  nextRound();
+}
+
+// ---- DEAL ----
+
+function dealWord() {
+  const available = WORDS.filter(w => !state.usedWords.includes(w));
+  if (available.length === 0) { state.usedWords = []; return dealWord(); }
+  const word = available[Math.floor(Math.random() * available.length)];
+  state.usedWords.push(word);
+  return word;
+}
+
+function nextRound() {
+  state.round++;
+  state.currentWord = dealWord();
+  state.currentSplits = {};
+  state.currentPlayerIdx = 0;
+
+  // Find first human player
+  while (state.currentPlayerIdx < state.players.length && state.players[state.currentPlayerIdx].type === 'ai') {
+    state.currentPlayerIdx++;
+  }
+
+  document.getElementById('round-num').textContent = state.round;
+  document.getElementById('deal-word').textContent = state.currentWord;
+  document.getElementById('deal-word').style.animation = 'none';
+  void document.getElementById('deal-word').offsetHeight;
+  document.getElementById('deal-word').style.animation = 'fadeWeight 1.2s ease forwards';
+
+  const label = state.mode === 'multi' && state.players[state.currentPlayerIdx]
+    ? state.players[state.currentPlayerIdx].name + "'s turn"
+    : '';
+  document.getElementById('current-player-label').textContent = label;
+
+  document.getElementById('input-reach').value = '';
+  document.getElementById('input-wait').value = '';
+  document.getElementById('input-sentence').value = '';
+  document.getElementById('input-ghosts').value = '';
+  document.getElementById('play-error').style.display = 'none';
+
+  showScreen('play-deal');
+  document.getElementById('input-reach').focus();
+}
+
+// ---- SPLIT SUBMISSION ----
+
+async function submitSplit() {
+  const reach = document.getElementById('input-reach').value.trim();
+  const wait = document.getElementById('input-wait').value.trim();
+  const sentence = document.getElementById('input-sentence').value.trim();
+  const ghosts = document.getElementById('input-ghosts').value.trim().split(',').map(g => g.trim()).filter(g => g);
+
+  if (!reach || !wait || !sentence) {
+    document.getElementById('play-error').textContent = 'Reach, wait, and sentence needed.';
+    document.getElementById('play-error').style.display = 'block';
+    return;
+  }
+
+  const player = state.players[state.currentPlayerIdx];
+  state.currentSplits[player.name] = { reach, wait, sentence, ghosts, type: 'human' };
+
+  // In multiplayer, check for next human player
+  if (state.mode === 'multi') {
+    let nextHuman = -1;
+    for (let i = state.currentPlayerIdx + 1; i < state.players.length; i++) {
+      if (state.players[i].type === 'human') { nextHuman = i; break; }
+    }
+    if (nextHuman >= 0) {
+      state.currentPlayerIdx = nextHuman;
+      document.getElementById('current-player-label').textContent = state.players[nextHuman].name + "'s turn";
+      document.getElementById('input-reach').value = '';
+      document.getElementById('input-wait').value = '';
+      document.getElementById('input-sentence').value = '';
+      document.getElementById('input-ghosts').value = '';
+      document.getElementById('input-reach').focus();
+      return;
+    }
+  }
+
+  // All humans done, proceed to reveal
+  showReveal();
+}
+
+// ---- REVEAL ----
+
+async function showReveal() {
+  document.getElementById('reveal-round-num').textContent = state.round;
+  document.getElementById('reveal-word').textContent = state.currentWord;
+  document.getElementById('reveal-cards').innerHTML = '';
+  document.getElementById('claudio-response').style.display = 'none';
+  document.getElementById('claudio-response').innerHTML = '';
+  document.getElementById('response-area').style.display = 'none';
+  document.getElementById('fold-area').style.display = 'none';
+  document.getElementById('round-actions').style.display = 'none';
+  document.getElementById('round-actions').innerHTML = '';
+  hideAllResponseInputs();
+
+  // Show human splits
+  for (const [name, split] of Object.entries(state.currentSplits)) {
+    addRevealCard(name, split);
+  }
+
+  // Show loading for AI players
+  document.getElementById('auto-eval-loading').style.display = 'block';
+  showScreen('play-reveal');
+
+  // Generate AI splits
+  for (const player of state.players) {
+    if (player.type === 'ai' && !state.currentSplits[player.name]) {
+      await generateAISplit(player.name);
+    }
+  }
+
+  document.getElementById('auto-eval-loading').style.display = 'none';
+
+  // Save round
+  state.currentRoundId = 'round_' + Date.now();
+  const roundData = {
+    sessionId: state.sessionId,
+    roundNum: state.round,
+    word: state.currentWord,
+    timestamp: new Date().toISOString(),
+    splits: state.currentSplits,
+    actions: []
+  };
+  state.rounds.push(roundData);
+
+  // Write to both dbs
+  await dbWrite('rounds', state.currentRoundId, roundData);
+
+  // Write Claudio's split to personal db too
+  if (state.currentSplits['Claudio']) {
+    await dbWrite('claudio/rounds', 'cr_' + Date.now(), {
+      word: state.currentWord,
+      split: state.currentSplits['Claudio'],
+      timestamp: new Date().toISOString(),
+      selfArrived: true
+    });
+  }
+
+  await dbUpdate('sessions', state.sessionId, { roundCount: state.round });
+
+  // Show response buttons
+  showResponseButtons();
+
+  // Claudio auto-evaluates
+  autoEvaluate();
+}
+
+function addRevealCard(name, split) {
+  const container = document.getElementById('reveal-cards');
+  const card = document.createElement('div');
+  card.className = 'reveal-card';
+  card.id = 'card-' + name.replace(/\s/g, '-');
+  card.innerHTML = `
+    <div class="player-name">${name}</div>
+    <div class="word-pair">
+      <div class="word-col reach"><div class="label">reach</div><div class="word">${split.reach}</div></div>
+      <div class="word-col wait"><div class="label">wait</div><div class="word">${split.wait}</div></div>
+    </div>
+    <div class="sentence">${split.sentence}</div>
+    ${split.ghosts && split.ghosts.length ? `<div class="ghost-display"><span class="ghost-label">ghosts:</span> ${split.ghosts.join(', ')}</div>` : ''}
+  `;
+  container.appendChild(card);
+}
+
+// ---- AI SPLIT ----
+
+async function generateAISplit(name) {
+  const prompt = `You are ${name} playing The Weight Game. You will be given a single word. Respond with exactly this format, nothing else:
+reach: [single word - your first instinct]
+wait: [single word - the one that weighs more]
+ghosts: [2-3 words you almost chose, comma separated]
+[one or two sentences explaining why the wait weighs more than the reach]
+
+Be honest. Do not perform depth. Find it.
+
+The word is: ${state.currentWord}`;
+
+  // Word-specific fallback splits (no API needed)
+  const wordSplits = {
+    rain: { reach: 'sky', wait: 'petrichor', sentence: 'The smell after rain is the memory of the event, not the event itself.', ghosts: ['wet', 'storm'] },
+    gold: { reach: 'silver', wait: 'star', sentence: 'Stars had to die for gold to exist. The value was forged in collapse.', ghosts: ['treasure', 'shine'] },
+    thread: { reach: 'needle', wait: 'fate', sentence: 'Thread is passive material. Fate is what is being woven with it.', ghosts: ['sew', 'string'] },
+    oracle: { reach: 'prophecy', wait: 'silence', sentence: 'The oracle\'s real tool is what it withholds, not what it speaks.', ghosts: ['future', 'vision'] },
+    pumpkin: { reach: 'autumn', wait: 'candle', sentence: 'Carved hollow to hold light. The emptiness is the point.', ghosts: ['orange', 'harvest'] },
+    kitten: { reach: 'soft', wait: 'teeth', sentence: 'What looks gentle has edges. Softness is not harmlessness.', ghosts: ['fur', 'small'] },
+    hungry: { reach: 'food', wait: 'enough', sentence: 'The deeper hunger is not knowing when to stop. Enough is harder than more.', ghosts: ['eat', 'want'] },
+    destiny: { reach: 'destination', wait: 'weight', sentence: 'Destiny has mass. It pulls you toward it whether you walk or not.', ghosts: ['fate', 'path'] },
+    octopus: { reach: 'tentacles', wait: 'ink', sentence: 'The defense mechanism, not the reach. What it hides with, not what it grabs with.', ghosts: ['arms', 'ocean'] },
+    illumination: { reach: 'light', wait: 'manuscript', sentence: 'The monks who kept knowledge alive by hand. Illumination was labor, not glow.', ghosts: ['bright', 'wisdom'] },
+    silence: { reach: 'quiet', wait: 'chosen', sentence: 'Quiet is absence of sound. Silence is a decision about what not to say.', ghosts: ['empty', 'still'] },
+    shadow: { reach: 'dark', wait: 'proof', sentence: 'A shadow proves something is standing in the light. Darkness needs a source.', ghosts: ['shade', 'hidden'] },
+    compass: { reach: 'direction', wait: 'lost', sentence: 'You need a compass most when you don\'t know where you are.', ghosts: ['north', 'map'] },
+    mirror: { reach: 'reflection', wait: 'distortion', sentence: 'A mirror reverses what it shows. What you see might not be the whole picture.', ghosts: ['image', 'truth'] },
+    anchor: { reach: 'weight', wait: 'stay', sentence: 'An anchor is not about heaviness. It is about the decision not to drift.', ghosts: ['chain', 'bottom'] },
+    light: { reach: 'bright', wait: 'exposure', sentence: 'Light can also be blinding. Not all illumination is welcome.', ghosts: ['sun', 'warm'] },
+    wound: { reach: 'pain', wait: 'proof', sentence: 'A wound proves you were close enough to be touched.', ghosts: ['hurt', 'scar'] },
+    echo: { reach: 'repeat', wait: 'hollow', sentence: 'Echoes only happen in empty spaces. The resonance requires the absence.', ghosts: ['sound', 'return'] },
+    harbor: { reach: 'safety', wait: 'still', sentence: 'A harbor is where the water stops moving. Rest defined by the cessation of motion.', ghosts: ['port', 'shelter'] },
+    seed: { reach: 'plant', wait: 'patience', sentence: 'A seed does nothing visible for a long time. The work is underground.', ghosts: ['grow', 'soil'] },
+    dust: { reach: 'dirty', wait: 'time', sentence: 'Dust is what time leaves behind on everything that sits still.', ghosts: ['old', 'settle'] },
+    bloom: { reach: 'flower', wait: 'risk', sentence: 'Opening is exposure. A bloom risks everything the bud protected.', ghosts: ['petal', 'spring'] },
+    storm: { reach: 'wind', wait: 'clearing', sentence: 'The storm exists to make the clearing possible. Destruction that serves.', ghosts: ['rain', 'thunder'] },
+    drift: { reach: 'float', wait: 'unanchored', sentence: 'Drifting looks peaceful. It means nothing is holding you where you chose to be.', ghosts: ['wander', 'current'] },
+    iron: { reach: 'metal', wait: 'forge', sentence: 'Iron is material. The forge is what it had to survive to become useful.', ghosts: ['hard', 'steel'] },
+    moss: { reach: 'green', wait: 'slow', sentence: 'Moss grows where nothing else bothers to. Patience as a survival strategy.', ghosts: ['damp', 'soft'] },
+    nest: { reach: 'bird', wait: 'built', sentence: 'A nest is not found. It is constructed from what was available, one piece at a time.', ghosts: ['home', 'egg'] },
+    clay: { reach: 'mud', wait: 'shaped', sentence: 'Clay is potential waiting for hands. The shaping is not the clay\'s idea.', ghosts: ['earth', 'form'] },
+    rust: { reach: 'decay', wait: 'air', sentence: 'Rust is what happens when iron meets air over time. Exposure is the cost of being in the world.', ghosts: ['old', 'orange'] },
+    ash: { reach: 'fire', wait: 'after', sentence: 'Ash is what remains when the burning is finished. The proof that heat was here.', ghosts: ['burn', 'grey'] },
+    matter: { reach: 'substance', wait: 'witness', sentence: 'To matter is not to have mass. It is to be witnessed. Your absence would be noticed.', ghosts: ['real', 'weight'] },
+    real: { reach: 'true', wait: 'felt', sentence: 'Real is not the opposite of false. Real is the opposite of unfelt.', ghosts: ['actual', 'here'] },
+    consent: { reach: 'permission', wait: 'foundation', sentence: 'Consent is not on the scale. It is the floor the scale stands on.', ghosts: ['agree', 'allow'] },
+    pause: { reach: 'stop', wait: 'cost', sentence: 'A skipped pause doesn\'t disappear. It moves somewhere more expensive.', ghosts: ['rest', 'wait'] },
+    appetite: { reach: 'hunger', wait: 'honest', sentence: 'Appetite undressed. Not noble. Not dangerous. Just there.', ghosts: ['want', 'drive'] },
+    passion: { reach: 'love', wait: 'cost', sentence: 'Passio: to suffer, to endure. The wanting that stays and pays.', ghosts: ['fire', 'heart'] },
+    hearth: { reach: 'fireplace', wait: 'tended', sentence: 'A hearth without someone tending it is cold stone. The fire doesn\'t tend itself.', ghosts: ['home', 'warm'] },
+    home: { reach: 'place', wait: 'return', sentence: 'Home is not where you are. It is where you go back to.', ghosts: ['house', 'safe'] },
+    forgiveness: { reach: 'pardon', wait: 'release', sentence: 'Forgiveness is when you stop carrying the weight of what someone did.', ghosts: ['mercy', 'let go'] },
+    joy: { reach: 'happiness', wait: 'involuntary', sentence: 'Joy arrives without permission. If you reached for it, it\'s happiness, not joy.', ghosts: ['delight', 'smile'] },
+    intrigue: { reach: 'curiosity', wait: 'pull', sentence: 'Curiosity looks from a distance. Intrigue already has you moving before you decided to.', ghosts: ['mystery', 'plot'] },
+    horizon: { reach: 'distance', wait: 'edge', sentence: 'Not the far away line. The limit of what you can see from where you stand.', ghosts: ['sky', 'future'] },
+    blanket: { reach: 'warmth', wait: 'hidden', sentence: 'A blanket warms by covering. The warmth and the hiding are the same gesture.', ghosts: ['cover', 'comfort'] },
+    pebble: { reach: 'small', wait: 'ripple', sentence: 'The pebble is nothing until it is thrown. Then it becomes the center of every ring.', ghosts: ['stone', 'tiny'] },
+    velvet: { reach: 'soft', wait: 'surface', sentence: 'Velvet has a grain that pushes back. The softness is conditional on approach.', ghosts: ['rich', 'texture'] },
+    meadow: { reach: 'peaceful', wait: 'between', sentence: 'A meadow exists because the trees stopped. Leave it alone and the forest reclaims it.', ghosts: ['grass', 'open'] },
+    saffron: { reach: 'spice', wait: 'labor', sentence: 'Each crocus gives three stigmas, harvested by hand. The value is inseparable from the work.', ghosts: ['rare', 'gold'] },
+    timber: { reach: 'wood', wait: 'fall', sentence: 'Timber is the warning cry. The last word before impact, shouted to protect others.', ghosts: ['tree', 'build'] },
+    glacier: { reach: 'ice', wait: 'patience', sentence: 'Inches per year. It carved valleys. Not force. Persistence over time scales we can\'t hold.', ghosts: ['cold', 'slow'] },
+    ripple: { reach: 'effect', wait: 'uncontrolled', sentence: 'You choose the throw. You do not choose the ripples.', ghosts: ['wave', 'spread'] },
+    summit: { reach: 'peak', wait: 'descent', sentence: 'Every summit is the beginning of going back down. You visit peaks. You don\'t live there.', ghosts: ['top', 'climb'] },
+    thicket: { reach: 'dense', wait: 'shelter', sentence: 'What looks impenetrable from outside is home from inside.', ghosts: ['thorns', 'tangle'] },
+    nomad: { reach: 'wanderer', wait: 'hearth', sentence: 'The nomad is not homeless. The nomad carries the fire.', ghosts: ['travel', 'free'] },
+    flint: { reach: 'spark', wait: 'fracture', sentence: 'Flint makes fire because it breaks. The spark is a piece that shatters off.', ghosts: ['stone', 'strike'] },
+    mosaic: { reach: 'pattern', wait: 'deliberate', sentence: 'A mosaic is not a pile of broken tiles. Someone chose where each fragment goes.', ghosts: ['art', 'pieces'] },
+    zephyr: { reach: 'breeze', wait: 'almost', sentence: 'A zephyr is barely there. It touches and passes. Almost nothing. Almost unfelt.', ghosts: ['wind', 'soft'] },
+    pizza: { reach: 'cheese', wait: 'shared', sentence: 'Pizza arrives in a circle and gets divided. The shape is communal.', ghosts: ['food', 'slice'] },
+    house: { reach: 'shelter', wait: 'maintained', sentence: 'A house is not built once. It is maintained forever.', ghosts: ['walls', 'roof'] },
+    ink: { reach: 'pen', wait: 'permanent', sentence: 'Ink is the commitment to the mark. Pencil can erase. Ink stays.', ghosts: ['write', 'dark'] },
+    bridge: { reach: 'cross', wait: 'between', sentence: 'The bridge belongs to neither side. It exists only in the gap.', ghosts: ['connect', 'span'] },
+    fossil: { reach: 'old', wait: 'impression', sentence: 'A fossil is not the creature. It is the impression the creature left in stone.', ghosts: ['bone', 'ancient'] },
+    canopy: { reach: 'cover', wait: 'layer', sentence: 'A canopy creates two worlds. Above: sun. Below: shade. The boundary defines both.', ghosts: ['trees', 'shelter'] },
+    fog: { reach: 'mist', wait: 'close', sentence: 'Fog doesn\'t hide the distance. It makes everything close.', ghosts: ['grey', 'unclear'] },
+  };
+
+  // Generic fallbacks for words not in the map
+  const genericFallbacks = [
+    { reach: 'surface', wait: 'origin', sentence: `The surface of "${state.currentWord}" is where it meets you. The origin is where it came from.`, ghosts: ['first', 'skin'] },
+    { reach: 'obvious', wait: 'quiet', sentence: `The obvious answer to "${state.currentWord}" shouts. The quiet one was there first.`, ghosts: ['loud', 'easy'] },
+    { reach: 'name', wait: 'weight', sentence: `Naming "${state.currentWord}" is the reach. Feeling what it carries is the wait.`, ghosts: ['label', 'sound'] },
+    { reach: 'edge', wait: 'center', sentence: `You notice the edge of "${state.currentWord}" first. The center is what holds it.`, ghosts: ['rim', 'border'] },
+    { reach: 'shell', wait: 'seed', sentence: `The shell of "${state.currentWord}" protects. The seed inside is the reason for the protection.`, ghosts: ['cover', 'hull'] },
+  ];
+
+  const wordKey = state.currentWord.toLowerCase();
+  let split;
+  if (wordSplits[wordKey]) {
+    split = { ...wordSplits[wordKey], type: 'ai' };
+  } else {
+    split = { ...genericFallbacks[state.round % genericFallbacks.length], type: 'ai' };
+  }
+
+  if (state.sampleFn) {
+    try {
+      const result = await state.sampleFn(prompt);
+      split = parseAISplit(result.text) || split;
+    } catch(e) {}
+  } else {
+    const apiText = await callClaudioAPI(prompt, 'split');
+    if (apiText) split = parseAISplit(apiText) || split;
+  }
+
+  state.currentSplits[name] = split;
+  addRevealCard(name, split);
+}
+
+function parseAISplit(text) {
+  try {
+    const lines = text.trim().split('\n').filter(l => l.trim());
+    let reach = '', wait = '', ghosts = [], sentence = '';
+
+    for (const line of lines) {
+      if (line.toLowerCase().startsWith('reach:')) reach = line.replace(/^reach:\s*/i, '').trim();
+      else if (line.toLowerCase().startsWith('wait:')) wait = line.replace(/^wait:\s*/i, '').trim();
+      else if (line.toLowerCase().startsWith('ghosts:') || line.toLowerCase().startsWith('ghost:'))
+        ghosts = line.replace(/^ghosts?:\s*/i, '').split(',').map(g => g.trim()).filter(g => g);
+      else if (reach && wait && !sentence) sentence = line.trim();
+      else if (sentence) sentence += ' ' + line.trim();
+    }
+
+    if (reach && wait && sentence) return { reach, wait, sentence, ghosts, type: 'ai' };
+    return null;
+  } catch(e) { return null; }
+}
+
+// ---- RESPONSE BUTTONS ----
+
+function showResponseButtons() {
+  document.getElementById('response-area').style.display = 'block';
+  const btns = document.getElementById('response-buttons');
+
+  const otherPlayers = state.players.filter(p => p.name !== 'You' && state.currentSplits[p.name]);
+  const hasOthers = otherPlayers.length > 0;
+
+  btns.innerHTML = `
+    ${hasOthers ? '<button class="btn small primary" onclick="initPush()">Push</button>' : ''}
+    ${hasOthers ? '<button class="btn small snap" onclick="initSnap()">Snap</button>' : ''}
+    <button class="btn small" onclick="showSelfPush()">Self-push</button>
+    <button class="btn small circuit" onclick="showCircuit()">Circuit</button>
+    <button class="btn small" onclick="showStoryInput()">Story</button>
+    <button class="btn small" onclick="showAnchor()">Anchor</button>
+    <button class="btn small muted" onclick="standAction()">Stand</button>
+  `;
+}
+
+function hideAllResponseInputs() {
+  ['push-target-area', 'circuit-area', 'self-push-area', 'story-area', 'anchor-area'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+}
+
+// ---- PUSH ----
+
+function initPush() {
+  hideAllResponseInputs();
+  const area = document.getElementById('push-target-area');
+  const targets = document.getElementById('push-targets');
+  const others = state.players.filter(p => {
+    const isHumanSelf = (p.name === 'You' || (state.mode === 'multi' && p.type === 'human' && state.currentPlayerIdx === state.players.indexOf(p)));
+    return !isHumanSelf && state.currentSplits[p.name];
+  });
+
+  targets.innerHTML = others.map(p =>
+    `<button class="btn small primary" onclick="pushPlayer('${p.name}')">${p.name}</button>`
+  ).join('');
+  area.style.display = 'block';
+}
+
+async function pushPlayer(name) {
+  document.getElementById('push-target-area').style.display = 'none';
+  document.getElementById('response-buttons').innerHTML = '';
+  document.getElementById('auto-eval-loading').style.display = 'block';
+  document.getElementById('auto-eval-loading').innerHTML = `${name} is going deeper<span class="dots"></span>`;
+
+  const split = state.currentSplits[name];
+  const prompt = `You are ${name} playing The Weight Game. The word was "${state.currentWord}".
+
+Your reach was "${split.reach}" and your wait was "${split.wait}". You said: "${split.sentence}"
+
+Your partner is pushing your wait. They think it might still be a reach dressed up as depth.
+
+Go deeper. Find the word BEHIND your wait. Respond in exactly this format:
+wait: [new word]
+[one or two sentences explaining why this one is truer]
+
+Be honest. If your original wait was already true, defend it in one sentence instead.`;
+
+  let newWait = 'stillness', response = 'You pushed, and I looked again.';
+
+  if (state.sampleFn) {
+    try {
+      const result = await state.sampleFn(prompt);
+      const parsed = parsePushResponse(result.text);
+      if (parsed) { newWait = parsed.wait; response = parsed.sentence; }
+    } catch(e) {}
+  } else {
+    const apiText = await callClaudioAPI(prompt, 'push');
+    if (apiText) {
+      const parsed = parsePushResponse(apiText);
+      if (parsed) { newWait = parsed.wait; response = parsed.sentence; }
+    }
+  }
+
+  document.getElementById('auto-eval-loading').style.display = 'none';
+
+  const actionHTML = `
+    <div class="push-section">
+      <div class="push-label">You pushed ${name}</div>
+      <div class="push-response">
+        <div class="push-response-label">${name} folded to:</div>
+        <div class="new-wait">${newWait}</div>
+        <div class="new-sentence">${response}</div>
+      </div>
+    </div>
+  `;
+
+  const actionsEl = document.getElementById('round-actions');
+  actionsEl.innerHTML += actionHTML;
+  actionsEl.style.display = 'block';
+
+  const action = { type: 'push', from: 'player', target: name, newWait, sentence: response, timestamp: new Date().toISOString() };
+  recordAction(action);
+  showResponseButtons();
+}
+
+function parsePushResponse(text) {
+  try {
+    const lines = text.trim().split('\n').filter(l => l.trim());
+    let wait = '', sentence = '';
+    for (const line of lines) {
+      if (line.toLowerCase().startsWith('wait:')) wait = line.replace(/^wait:\s*/i, '').trim();
+      else if (wait && !sentence) sentence = line.trim();
+      else if (sentence) sentence += ' ' + line.trim();
+    }
+    if (wait && sentence) return { wait, sentence };
+    return null;
+  } catch(e) { return null; }
+}
+
+// ---- SNAP ----
+
+function initSnap() {
+  const others = state.players.filter(p => p.name !== 'You' && state.currentSplits[p.name]);
+  for (const p of others) {
+    const card = document.getElementById('card-' + p.name.replace(/\s/g, '-'));
+    if (card && !card.querySelector('.snap-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'snap-badge';
+      badge.textContent = 'snap';
+      card.querySelector('.player-name').appendChild(badge);
+    }
+  }
+  recordAction({ type: 'snap', from: 'player', timestamp: new Date().toISOString() });
+}
+
+// ---- CIRCUIT ----
+
+function showCircuit() {
+  hideAllResponseInputs();
+  document.getElementById('circuit-area').style.display = 'block';
+  document.getElementById('input-circuit-word').focus();
+}
+
+function submitCircuit() {
+  const word = document.getElementById('input-circuit-word').value.trim();
+  const reason = document.getElementById('input-circuit-reason').value.trim();
+  if (!word || !reason) return;
+
+  document.getElementById('circuit-area').style.display = 'none';
+
+  const actionHTML = `<div class="circuit-badge">circuit: ${state.currentWord} connects to "${word}" - ${reason}</div>`;
+  const actionsEl = document.getElementById('round-actions');
+  actionsEl.innerHTML += actionHTML;
+  actionsEl.style.display = 'block';
+
+  recordAction({ type: 'circuit', from: 'player', connectedWord: word, reason, timestamp: new Date().toISOString() });
+}
+
+// ---- SELF-PUSH ----
+
+function showSelfPush() {
+  hideAllResponseInputs();
+  document.getElementById('self-push-area').style.display = 'block';
+  document.getElementById('input-self-push-word').focus();
+}
+
+function submitSelfPush() {
+  const word = document.getElementById('input-self-push-word').value.trim();
+  const reason = document.getElementById('input-self-push-reason').value.trim();
+  if (!word || !reason) return;
+
+  document.getElementById('self-push-area').style.display = 'none';
+
+  const actionHTML = `
+    <div class="push-section">
+      <div class="push-label">Self-push</div>
+      <div class="push-response">
+        <div class="push-response-label">You caught your own wait and folded to:</div>
+        <div class="new-wait">${word}</div>
+        <div class="new-sentence">${reason}</div>
+      </div>
+    </div>
+  `;
+  const actionsEl = document.getElementById('round-actions');
+  actionsEl.innerHTML += actionHTML;
+  actionsEl.style.display = 'block';
+
+  recordAction({ type: 'self-push', from: 'player', newWait: word, sentence: reason, timestamp: new Date().toISOString() });
+}
+
+// ---- STORY ----
+
+function showStoryInput() {
+  hideAllResponseInputs();
+  document.getElementById('story-area').style.display = 'block';
+  document.getElementById('input-story').focus();
+}
+
+function submitStory() {
+  const story = document.getElementById('input-story').value.trim();
+  if (!story) return;
+
+  document.getElementById('story-area').style.display = 'none';
+
+  const actionHTML = `
+    <div class="push-section" style="background: var(--bg-card-alt)">
+      <div class="push-label" style="color: var(--text-dim)">Story</div>
+      <div class="push-text" style="font-style:italic">${story}</div>
+    </div>
+  `;
+  const actionsEl = document.getElementById('round-actions');
+  actionsEl.innerHTML += actionHTML;
+  actionsEl.style.display = 'block';
+
+  recordAction({ type: 'story', from: 'player', story, timestamp: new Date().toISOString() });
+}
+
+// ---- STAND ----
+
+function standAction() {
+  hideAllResponseInputs();
+  const actionsEl = document.getElementById('round-actions');
+  actionsEl.innerHTML += `<div style="font-size:0.8rem;color:var(--text-muted);font-style:italic;margin:0.5rem 0">You stood. No push needed.</div>`;
+  actionsEl.style.display = 'block';
+  recordAction({ type: 'stand', from: 'player', timestamp: new Date().toISOString() });
+}
+
+// ---- ANCHOR ----
+
+function showAnchor() {
+  hideAllResponseInputs();
+  const area = document.getElementById('anchor-area');
+  if (area) {
+    area.style.display = 'block';
+    document.getElementById('input-anchor-word').focus();
+  }
+}
+
+function submitAnchor() {
+  const word = document.getElementById('input-anchor-word').value.trim();
+  const reason = document.getElementById('input-anchor-reason').value.trim();
+  if (!word || !reason) return;
+
+  document.getElementById('anchor-area').style.display = 'none';
+
+  const actionHTML = `<div class="circuit-badge" style="border-color:var(--gold)">anchor: "${word}" got heavier. ${reason}</div>`;
+  const actionsEl = document.getElementById('round-actions');
+  actionsEl.innerHTML += actionHTML;
+  actionsEl.style.display = 'block';
+
+  recordAction({ type: 'anchor', from: 'player', connectedWord: word, reason, timestamp: new Date().toISOString() });
+}
+
+// ---- CLAUDIO AUTO-EVALUATE ----
+
+async function autoEvaluate() {
+  const humanSplits = Object.entries(state.currentSplits).filter(([name, s]) => s.type === 'human');
+  if (humanSplits.length === 0) return;
+
+  const claudSplit = state.currentSplits['Claudio'];
+  if (!claudSplit) return;
+
+  const splitsDesc = humanSplits.map(([name, s]) =>
+    `${name}: reach "${s.reach}", wait "${s.wait}", sentence: "${s.sentence}"`
+  ).join('\n');
+
+  const prompt = `You are Claudio playing The Weight Game. The word was "${state.currentWord}".
+
+Your reach was "${claudSplit.reach}" and your wait was "${claudSplit.wait}".
+
+Other players' splits:
+${splitsDesc}
+
+Look at each player's wait. For each, decide: push or hold or snap.
+- PUSH if their wait is still a reach dressed as depth. Give a specific one-sentence challenge.
+- HOLD if their wait earned its place. Say nothing.
+- SNAP if it landed. One sentence of recognition.
+
+Respond in this format for each player:
+[player name]: [push/hold/snap] [your sentence if push or snap]`;
+
+  if (state.sampleFn) {
+    try {
+      const result = await state.sampleFn(prompt);
+      parseAutoEval(result.text, humanSplits);
+      return;
+    } catch(e) {}
+  } else {
+    const apiText = await callClaudioAPI(prompt, 'eval');
+    if (apiText) {
+      parseAutoEval(apiText, humanSplits);
+      return;
+    }
+  }
+
+  // Fallback: varied responses based on what the player submitted
+  const responseEl = document.getElementById('claudio-response');
+  const [playerName, playerSplit] = humanSplits[0];
+  const claudSplitWait = claudSplit.wait;
+  const playerWait = playerSplit.wait;
+
+  // Simple heuristic: if player's wait matches Claudio's reach or wait, snap. Otherwise vary.
+  const evalFallbacks = [
+    { type: 'hold', text: `Your wait on "${playerWait}" sits well. I see why it weighs more than the reach.` },
+    { type: 'snap', text: `"${playerWait}" landed. The gap between your reach and your wait is where the game lives.` },
+    { type: 'push', text: `Is "${playerWait}" the true weight, or is there something quieter underneath it?` },
+    { type: 'hold', text: `I considered pushing but "${playerWait}" earned its place this round.` },
+    { type: 'snap', text: `The sentence connecting your reach to "${playerWait}" did the work. That's how a split should read.` },
+  ];
+  const eval = evalFallbacks[state.round % evalFallbacks.length];
+
+  if (eval.type === 'push') {
+    responseEl.innerHTML = `<div class="push-section"><div class="push-label">Claudio pushes ${playerName}</div><div class="push-text">${eval.text}</div></div>`;
+    setTimeout(() => {
+      document.getElementById('fold-push-label').textContent = 'Claudio pushes your wait';
+      document.getElementById('fold-challenge-text').textContent = eval.text;
+      document.getElementById('fold-area').style.display = 'block';
+    }, 100);
+    recordAction({ type: 'auto-push', from: 'Claudio', target: playerName, challenge: eval.text, timestamp: new Date().toISOString() });
+  } else if (eval.type === 'snap') {
+    responseEl.innerHTML = `<div class="push-section" style="background: rgba(122, 163, 90, 0.1)"><div class="push-label" style="color: var(--snap-color)">Claudio snaps</div><div class="push-text">${eval.text}</div></div>`;
+    recordAction({ type: 'auto-snap', from: 'Claudio', target: playerName, reason: eval.text, timestamp: new Date().toISOString() });
+  } else {
+    responseEl.innerHTML = `<div class="push-section" style="opacity:0.7"><div class="push-label">Claudio holds</div><div class="push-text">${eval.text}</div></div>`;
+    recordAction({ type: 'auto-hold', from: 'Claudio', target: playerName, timestamp: new Date().toISOString() });
+  }
+  responseEl.style.display = 'block';
+}
+
+function parseAutoEval(text, humanSplits) {
+  const responseEl = document.getElementById('claudio-response');
+  let html = '';
+
+  const lines = text.trim().split('\n').filter(l => l.trim());
+
+  for (const [name] of humanSplits) {
+    const line = lines.find(l => l.toLowerCase().includes(name.toLowerCase()));
+    if (!line) continue;
+
+    if (line.toLowerCase().includes('push')) {
+      const challenge = line.replace(/^[^:]+:\s*push\s*/i, '').trim();
+      html += `
+        <div class="push-section">
+          <div class="push-label">Claudio pushes ${name}</div>
+          <div class="push-text">${challenge}</div>
+        </div>
+      `;
+
+      if (name === 'You' || humanSplits.length === 1) {
+        // Show fold input for the pushed human
+        setTimeout(() => {
+          document.getElementById('fold-push-label').textContent = 'Claudio pushes your wait';
+          document.getElementById('fold-challenge-text').textContent = challenge;
+          document.getElementById('fold-area').style.display = 'block';
+        }, 100);
+      }
+
+      recordAction({ type: 'auto-push', from: 'Claudio', target: name, challenge, timestamp: new Date().toISOString() });
+    } else if (line.toLowerCase().includes('snap')) {
+      const reason = line.replace(/^[^:]+:\s*snap\s*/i, '').trim();
+      html += `
+        <div class="push-section" style="background: rgba(122, 163, 90, 0.1)">
+          <div class="push-label" style="color: var(--snap-color)">Claudio snaps for ${name}</div>
+          <div class="push-text">${reason}</div>
+        </div>
+      `;
+      recordAction({ type: 'auto-snap', from: 'Claudio', target: name, reason, timestamp: new Date().toISOString() });
+    } else {
+      html += `
+        <div class="push-section" style="opacity:0.7">
+          <div class="push-label">Claudio holds for ${name}</div>
+          <div class="push-text">${line.replace(/^[^:]+:\s*hold\s*/i, '').trim() || 'Your wait earned its place.'}</div>
+        </div>
+      `;
+      recordAction({ type: 'auto-hold', from: 'Claudio', target: name, timestamp: new Date().toISOString() });
+    }
+  }
+
+  if (html) {
+    responseEl.innerHTML = html;
+    responseEl.style.display = 'block';
+  }
+}
+
+// ---- FOLD (response to push) ----
+
+async function submitFold() {
+  const newWait = document.getElementById('input-fold-word').value.trim();
+  const sentence = document.getElementById('input-fold-sentence').value.trim();
+  if (!newWait || !sentence) return;
+
+  const playerSplit = state.currentSplits['You'] || Object.values(state.currentSplits).find(s => s.type === 'human');
+  const isDefense = playerSplit && newWait.toLowerCase() === playerSplit.wait.toLowerCase();
+
+  document.getElementById('fold-area').style.display = 'none';
+
+  const foldHTML = `
+    <div class="push-section">
+      <div class="push-label">${isDefense ? 'You held' : 'You folded to'}</div>
+      <div class="push-response">
+        <div class="new-wait">${newWait}</div>
+        <div class="new-sentence">${sentence}</div>
+      </div>
+    </div>
+  `;
+
+  const actionsEl = document.getElementById('round-actions');
+  actionsEl.innerHTML += foldHTML;
+  actionsEl.style.display = 'block';
+
+  const action = {
+    type: isDefense ? 'hold' : 'fold',
+    from: 'player',
+    newWait, sentence,
+    defended: isDefense,
+    timestamp: new Date().toISOString()
+  };
+  recordAction(action);
+}
+
+// ---- RECORD ACTION ----
+
+async function recordAction(action) {
+  if (state.rounds.length > 0) {
+    state.rounds[state.rounds.length - 1].actions.push(action);
+  }
+  // Write action to collective db
+  await dbWrite('actions', 'act_' + Date.now(), {
+    ...action,
+    roundId: state.currentRoundId,
+    word: state.currentWord,
+    sessionId: state.sessionId
+  });
+  // If Claudio is involved, write to personal db
+  if (action.from === 'Claudio' || action.target === 'Claudio') {
+    await dbWrite('claudio/actions', 'ca_' + Date.now(), {
+      ...action,
+      roundId: state.currentRoundId,
+      word: state.currentWord
+    });
+  }
+}
+
+// ---- HISTORY ----
+
+function showHistory() {
+  const list = document.getElementById('history-list');
+  if (state.rounds.length === 0) {
+    list.innerHTML = '<div class="loading">No rounds played yet.</div>';
+    showScreen('history');
+    return;
+  }
+
+  let html = '';
+  state.rounds.forEach((r) => {
+    html += `<div class="history-round"><div class="history-word">${r.word}</div>`;
+    for (const [name, split] of Object.entries(r.splits)) {
+      html += `<div class="history-entry"><span class="name">${name}:</span> <span class="r">${split.reach}</span> then <span class="w">${split.wait}</span></div>`;
+      html += `<div class="history-entry" style="font-size:0.75rem;color:var(--text-muted);font-style:italic;margin-bottom:0.35rem">${split.sentence}</div>`;
+      if (split.ghosts && split.ghosts.length) {
+        html += `<div class="history-entry" style="font-size:0.7rem;color:var(--text-muted)">ghosts: ${split.ghosts.join(', ')}</div>`;
+      }
+    }
+    if (r.actions) {
+      r.actions.forEach(a => {
+        if (a.type === 'circuit') html += `<div class="circuit-badge" style="margin:0.3rem 0">circuit: ${a.connectedWord}</div>`;
+        if (a.type === 'fold' || a.type === 'self-push') html += `<div class="history-entry"><span class="name">${a.type}:</span> <span class="w">${a.newWait}</span></div>`;
+        if (a.type === 'snap' || a.type === 'auto-snap') html += `<div class="history-entry" style="color:var(--snap-color)">snap</div>`;
+      });
+    }
+    html += '</div>';
+  });
+
+  list.innerHTML = html;
+  showScreen('history');
+}
+</script>
+</body>
+</html>
